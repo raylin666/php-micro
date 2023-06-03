@@ -11,13 +11,7 @@ declare(strict_types=1);
  */
 use Hyperf\HttpServer\Router\Router;
 
-// 公共路由
-Router::addGroup('/', function () {
-    include_once 'routes/base.php';
-});
+const ACCOUNT_MODULE_CONTROLLER = '\App\Account\Controller';
 
-// 账号相关路由
-Router::addGroup('/account', function () {
-    include_once 'routes/account.php';
-});
-
+// 账号登陆
+Router::post('/login', ACCOUNT_MODULE_CONTROLLER . '\\AccountController@index');

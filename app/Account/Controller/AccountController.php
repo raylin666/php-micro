@@ -9,13 +9,13 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace %NAMESPACE%;
+namespace App\Account\Controller;
 
-%USES%
+
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
-class %CLASS% extends Controller
+class AccountController extends Controller
 {
     /**
      * @param RequestInterface  $request

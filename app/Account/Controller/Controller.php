@@ -9,15 +9,12 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\HttpServer\Router\Router;
+namespace App\Account\Controller;
 
-// 公共路由
-Router::addGroup('/', function () {
-    include_once 'routes/base.php';
-});
+use Core\Traits\ControllerTrait;
+use Core\Abstract\ControllerAbstract;
 
-// 账号相关路由
-Router::addGroup('/account', function () {
-    include_once 'routes/account.php';
-});
-
+abstract class Controller extends ControllerAbstract
+{
+    use ControllerTrait;
+}
