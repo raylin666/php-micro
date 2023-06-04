@@ -9,8 +9,10 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\HttpServer\Router\Router;
-use App\Account\Controller\AccountController;
+namespace Core\Constants;
 
-// 账号登陆
-Router::post('/login', [AccountController::class, 'login']);
+class Log
+{
+    // 公共异常日志
+    public const APP_EXCEPTION = 'exception';
+}

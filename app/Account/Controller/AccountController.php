@@ -11,7 +11,6 @@ declare(strict_types=1);
  */
 namespace App\Account\Controller;
 
-
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 
@@ -22,8 +21,8 @@ class AccountController extends Controller
      * @param ResponseInterface $response
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function index(RequestInterface $request, ResponseInterface $response)
+    public function login(RequestInterface $request, ResponseInterface $response)
     {
-        return $response->raw('Hello Raylin666!');
+        return $response->json('Hello Raylin666!');
     }
 }
