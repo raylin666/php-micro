@@ -9,8 +9,9 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\HttpServer\Router\Router;
-use App\Account\Controller\LoginController;
+namespace Core\Helper;
 
-// 账号登陆
-Router::post('/login', [LoginController::class, 'login']);
+class JWTHelper
+{
+
+}

@@ -9,8 +9,13 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\HttpServer\Router\Router;
-use App\Account\Controller\LoginController;
+namespace Core\Constants;
 
-// 账号登陆
-Router::post('/login', [LoginController::class, 'login']);
+class Enum
+{
+    // 状态开启
+    public const STATUS_ON = 1;
+
+    // 状态关闭
+    public const STATUS_OFF = 0;
+}

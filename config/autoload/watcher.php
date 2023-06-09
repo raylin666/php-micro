@@ -16,7 +16,7 @@ return [
     'bin' => 'php',
     'command' => 'watcher.php start',
     'watch' => [
-        'dir' => ['core', 'app', 'config'],
+        'dir' => ['core', 'app', 'config', 'storage'],
         'file' => ['.env'],
         'scan_interval' => 2000,
     ],
