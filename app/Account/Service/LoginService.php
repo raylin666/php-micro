@@ -12,28 +12,53 @@ declare(strict_types=1);
 namespace App\Account\Service;
 
 use App\Account\Logic\LoginLogic;
+use App\Account\Model\Account;
 use Core\Constants\ErrorCode;
-use Core\Contract\LogicInterface;
-use function Hyperf\Support\make;
+use Hyperf\Di\Annotation\Inject;
 
 class LoginService extends Service
 {
-    public function login(array $data)
+    #[Inject]
+    public LoginLogic $loginLogic;
+
+    /**
+     * 账号登录.
+     * @param string $username
+     * @param string $password
+     * @return array
+     */
+    public function login(string $username, string $password): array
     {
-        $username = $data['username'] ?? '';
-        $password = $data['password'] ?? '';
         if (empty($username) || empty($password)) {
             return error(ErrorCode::ACCOUNT_OR_PASSWORD_ERROR);
         }
 
-        $result = $this->getLogic()->login($username, $password);
-        return null;
+        /** @var Account $account */
+        [$token, $account] = $this->loginLogic->login($username, $password);
+        if (empty($account)) {
+            return error(ErrorCode::LOGIN_ERROR);
+        }
+
+        $account = Account::getInfo($account);
+        $account['token'] = $token;
+        return $account;
     }
 
-    public function initializeLogic(): ?LogicInterface
+    /**
+     * 账号登出.
+     * @return array
+     */
+    public function logout(): array
     {
-        // TODO: Implement initializeLogic() method.
+        $account = $this->getContextAccount();
+        if (empty($account)) {
+            return error(ErrorCode::INVALID_IDENTITY_ERROR);
+        }
 
-        return make(LoginLogic::class);
+        $account = $this->loginLogic->logout($account);
+
+        return [
+            'id' => $account->getAttributeValue('id'),
+        ];
     }
 }

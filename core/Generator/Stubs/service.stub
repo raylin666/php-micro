@@ -12,14 +12,8 @@ declare(strict_types=1);
 namespace %NAMESPACE%;
 
 %USES%
-use Core\Contract\LogicInterface;
 
 class %CLASS% extends Service
 {
-    public function initializeLogic(): ?LogicInterface
-    {
-        // TODO: Implement initializeLogic() method.
 
-        return null;
-    }
 }

@@ -15,11 +15,13 @@ use Core\Constants\HttpErrorCode;
 use Core\Constants\Log;
 use Core\Decorator\ResponseDecorator;
 use Core\Exception\BusinessException;
+use Core\Exception\ErrorException;
+use Core\Exception\JWTException;
+use Core\Exception\TokenValidException;
 use Core\Helper\ApplicationHelper;
 use Hyperf\Codec\Json;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
-use Hyperf\Logger\LoggerFactory;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -33,7 +35,7 @@ class AppExceptionHandler extends ExceptionHandler
 
     public function __construct(ContainerInterface $container)
     {
-        $this->logger = $container->get(LoggerFactory::class)->get(Log::APP_EXCEPTION);
+        $this->logger = ApplicationHelper::getLogger()->get(Log::APP_EXCEPTION);
     }
 
     public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
@@ -46,14 +48,24 @@ class AppExceptionHandler extends ExceptionHandler
 
         $decorator = make(ResponseDecorator::class);
         $code = HttpErrorCode::HTTP_INTERNAL_SERVER_ERROR;
-        if ($throwable instanceof BusinessException) {
-            $this->logger->warning($throwable->getMessage(), $errLog);
-            $code = HttpErrorCode::HTTP_BAD_REQUEST;
-            $decorator->withCode($throwable->getCode());
-            $decorator->withMessage($throwable->getMessage());
-        } else {
-            $this->logger->error($throwable->getMessage(), $errLog);
-            $decorator->withCode($code);
+        $message = $throwable->getMessage();
+        switch (get_class($throwable)) {
+            case BusinessException::class:
+            case JWTException::class:
+            case TokenValidException::class:
+                $this->logger->warning($message, $errLog);
+                $code = HttpErrorCode::HTTP_BAD_REQUEST;
+                $decorator->withCode($throwable->getCode());
+                $message && $decorator->withMessage($message);
+                break;
+            case ErrorException::class:
+                $this->logger->error($message, $errLog);
+                $throwable->getCode() ? $decorator->withCode($throwable->getCode()) : $decorator->withCode($code);
+                $message && $decorator->withMessage($message);
+                break;
+            default:
+                $this->logger->error($message, $errLog);
+                $decorator->withCode($code);
         }
 
         return $response

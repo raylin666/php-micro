@@ -9,14 +9,9 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace App\Account\Service;
+namespace Core\Contract;
 
-use Core\Traits\AccountTrait;
-use Core\Traits\ServiceTrait;
-use Core\Abstract\ServiceAbstract;
-
-abstract class Service extends ServiceAbstract
+interface AccountInterface
 {
-    use ServiceTrait;
-    use AccountTrait;
+
 }

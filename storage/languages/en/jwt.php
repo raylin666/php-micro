@@ -9,14 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace App\Account\Service;
-
-use Core\Traits\AccountTrait;
-use Core\Traits\ServiceTrait;
-use Core\Abstract\ServiceAbstract;
-
-abstract class Service extends ServiceAbstract
-{
-    use ServiceTrait;
-    use AccountTrait;
-}
+return [
+    'not_token' => 'Missing verification token',
+    'token_valid' => 'Token authentication does not pass',
+];

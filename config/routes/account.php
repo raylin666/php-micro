@@ -14,3 +14,5 @@ use App\Account\Controller\LoginController;
 
 // 账号登陆
 Router::post('/login', [LoginController::class, 'login']);
+// 账号登出
+Router::post('/logout', [LoginController::class, 'logout']);

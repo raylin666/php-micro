@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 class LoginController extends Controller
 {
     #[Inject]
-    protected LoginService $service;
+    protected LoginService $loginService;
 
     /**
      * 账号登录.
@@ -29,6 +29,17 @@ class LoginController extends Controller
     public function login(LoginRequest $request): ResponseInterface
     {
         $data = $request->validated();
-        return $this->response->json($this->service->login($data));
+        $username = strval($data['username'] ?? '');
+        $password = strval($data['password'] ?? '');
+        return $this->response->json($this->loginService->login($username, $password));
+    }
+
+    /**
+     * 账号登出.
+     * @return ResponseInterface
+     */
+    public function logout(): ResponseInterface
+    {
+        return $this->response->json($this->loginService->logout());
     }
 }

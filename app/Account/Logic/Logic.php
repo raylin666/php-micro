@@ -11,10 +11,12 @@ declare(strict_types=1);
  */
 namespace App\Account\Logic;
 
+use Core\Traits\AccountTrait;
 use Core\Traits\LogicTrait;
 use Core\Abstract\LogicAbstract;
 
 abstract class Logic extends LogicAbstract
 {
     use LogicTrait;
+    use AccountTrait;
 }

@@ -34,8 +34,36 @@ use Hyperf\Constants\Annotation\Constants;
 class ErrorCode extends AbstractConstants
 {
     /**
+     * 系统相关错误状态码 00.
+     */
+    /**
+     * @Message("系统令牌错误")
+     */
+    public const SYSTEM_JWT_ALGORITHM_NOT_METHOD_ERROR = 100001;
+    /**
+     * @Message("新增数据失败")
+     */
+    public const SYSTEM_INSERT_DATA_ERROR = 100002;
+    /**
+     * @Message("更新数据失败")
+     */
+    public const SYSTEM_UPDATE_DATA_ERROR = 100003;
+    /**
+     * @Message("删除数据失败")
+     */
+    public const SYSTEM_DELETE_DATA_ERROR = 100004;
+
+    /**
      * 账号相关错误状态码 01.
      */
+    /**
+     * @Message("无效身份")
+     */
+    public const INVALID_IDENTITY_ERROR = 101001;
+    /**
+     * @Message("登录失败, 请联系管理员")
+     */
+    public const LOGIN_ERROR = 101002;
     /**
      * @Message("账号或密码错误")
      */
@@ -48,4 +76,12 @@ class ErrorCode extends AbstractConstants
      * @Message("账号已冻结, 请联系管理员")
      */
     public const ACCOUNT_FROZEN_ERROR = 201003;
+    /**
+     * @Message("账号验证错误")
+     */
+    public const ACCOUNT_VALIDATE_ERROR = 201004;
+    /**
+     * @Message("账号已在其他区域登录, 请重新登录")
+     */
+    public const ACCOUNT_LOGIN_OTHER_REGION_ERROR = 201005;
 }

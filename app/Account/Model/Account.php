@@ -51,7 +51,9 @@ class Account extends Model
     /**
      * The attributes that should be cast to native types.
      */
-    protected array $casts = ['id' => 'integer', 'sex' => 'integer', 'last_login_ip' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+    protected array $casts = ['id' => 'integer', 'sex' => 'integer', 'last_login_ip' => 'integer', 'status' => 'integer', 'first_login_at' => 'datetime', 'last_login_at' => 'datetime', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    protected array $hidden = ['password'];
 
     /**
      * 密码加密.
@@ -61,23 +63,54 @@ class Account extends Model
         $this->attributes['password'] = PasswordHelper::passwordHash($password);
     }
 
+    public function setLastLoginIpAttribute(string $ip): void
+    {
+        $this->attributes['last_login_ip'] = ip2long($ip);
+    }
+
+    public function getLastLoginIpAttribute(): string
+    {
+        $ip = long2ip($this->attributes['last_login_ip']);
+        return is_string($ip) ? $ip : '';
+    }
+
+    public static function getInfo(Account $account): array
+    {
+        $account = $account->toArray();
+
+        return [
+            'id' => $account['id'],
+            'username' => $account['username'],
+            'real_username' => $account['real_username'],
+            'sex' => $account['sex'],
+            'birthday_at' => $account['birthday_at'],
+            'avatar' => $account['avatar'],
+            'phone_area' => $account['phone_area'],
+            'phone' => $account['phone'],
+            'email' => $account['email'],
+            'last_login_ip' => $account['last_login_ip'],
+            'status' => $account['status'],
+            'first_login_at' => $account['first_login_at'],
+            'last_login_at' => $account['last_login_at'],
+            'created_at' => $account['created_at'],
+        ];
+    }
+
     /**
      * 验证密码
      */
-    protected function passwordVerify(string $password, string $hash): bool
+    public static function passwordVerify(string $password, string $hash): bool
     {
         return PasswordHelper::passwordVerify($password, $hash);
     }
 
-    protected function getFindByUsername(string $username, $columns = ['*'])
+    public static function getFindById(int $id, $columns = ['*'])
     {
-        return $this->where('username', $username)->select($columns)->first();
+        return self::where('id', $id)->select($columns)->first();
     }
 
-    protected function updateLoginInfo(int $id)
+    public static function getFindByUsername(string $username, $columns = ['*'])
     {
-        $this->where('id', $id)->update([
-
-        ]);
+        return self::where('username', $username)->select($columns)->first();
     }
 }
