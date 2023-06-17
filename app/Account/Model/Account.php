@@ -74,6 +74,24 @@ class Account extends Model
         return is_string($ip) ? $ip : '';
     }
 
+    /**
+     * 验证密码
+     */
+    public static function passwordVerify(string $password, string $hash): bool
+    {
+        return PasswordHelper::passwordVerify($password, $hash);
+    }
+
+    public static function getFindById(int $id, $columns = ['*'])
+    {
+        return self::where('id', $id)->select($columns)->first();
+    }
+
+    public static function getFindByUsername(string $username, $columns = ['*'])
+    {
+        return self::where('username', $username)->select($columns)->first();
+    }
+
     public static function getInfo(Account $account): array
     {
         $account = $account->toArray();
@@ -94,23 +112,5 @@ class Account extends Model
             'last_login_at' => $account['last_login_at'],
             'created_at' => $account['created_at'],
         ];
-    }
-
-    /**
-     * 验证密码
-     */
-    public static function passwordVerify(string $password, string $hash): bool
-    {
-        return PasswordHelper::passwordVerify($password, $hash);
-    }
-
-    public static function getFindById(int $id, $columns = ['*'])
-    {
-        return self::where('id', $id)->select($columns)->first();
-    }
-
-    public static function getFindByUsername(string $username, $columns = ['*'])
-    {
-        return self::where('username', $username)->select($columns)->first();
     }
 }
