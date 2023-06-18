@@ -54,10 +54,14 @@ class HttpJwtMiddleware implements MiddlewareInterface
         }
 
         $authorization = $request->getHeaderLine('Authorization') ?? '';
-        if (empty($authorization)) {
+        if (
+            empty($authorization)
+            || ! preg_match('/Bearer\\s(\\S+)/', $authorization, $matches)
+        ) {
             throw new JWTException(t('jwt.not_token'));
         }
 
+        $authorization = $matches[1];
         $token = $this->jwt->checkToken($authorization);
         if ($token === false) {
             throw new TokenValidException(t('jwt.token_valid'));
@@ -66,20 +70,20 @@ class HttpJwtMiddleware implements MiddlewareInterface
         // 获取账号ID
         $accountId = intval($this->jwt->getTokenClaims($token)->get('jti'));
         if ($accountId <= 0) {
-            error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
+            return error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
         }
 
         $account = Account::getFindById($accountId);
         if (empty($account)) {
-            error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
+            return error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
         }
         // 目前只支持单端登录, 故匹配当前登录的TOKEN和当前提交的TOKEN对比
         $currentLoginToken = $account->getAttributeValue('current_login_token');
         if (empty($currentLoginToken)) {
-            error(ErrorCode::INVALID_IDENTITY_ERROR);
+            return error(ErrorCode::INVALID_IDENTITY_ERROR);
         }
         if ($currentLoginToken != $authorization) {
-            error(ErrorCode::ACCOUNT_LOGIN_OTHER_REGION_ERROR);
+            return error(ErrorCode::ACCOUNT_LOGIN_OTHER_REGION_ERROR);
         }
 
         // 设置上下文账号信息
