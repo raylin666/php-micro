@@ -21,3 +21,8 @@ Router::addGroup('/account', function () {
     include_once 'routes/account.php';
 });
 
+// 知识库相关路由
+Router::addGroup('/knowledge', function () {
+    include_once 'routes/knowledge.php';
+});
+
