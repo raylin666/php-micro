@@ -11,7 +11,24 @@ declare(strict_types=1);
  */
 namespace App\Knowledge\Logic;
 
+use App\Knowledge\Model\Article;
+use Core\Constants\ErrorCode;
+use Hyperf\Contract\LengthAwarePaginatorInterface;
+
 class ArticleLogic extends Logic
 {
+    /**
+     * 获取文章列表.
+     * @param int $page
+     * @param int $size
+     * @return LengthAwarePaginatorInterface
+     */
+    public function list(int $page, int $size): LengthAwarePaginatorInterface
+    {
+        if (($page < 1) || ($size < 1)) {
+            error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
 
+        return Article::getPageList($page, $size);
+    }
 }

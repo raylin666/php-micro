@@ -11,7 +11,8 @@ declare(strict_types=1);
  */
 namespace App\Knowledge\Model;
 
-
+use Core\Constants\Page;
+use Hyperf\Contract\LengthAwarePaginatorInterface;
 
 /**
  * @property int $id 主键
@@ -50,4 +51,9 @@ class Article extends Model
      * The attributes that should be cast to native types.
      */
     protected array $casts = ['id' => 'integer', 'sort' => 'integer', 'recommend_flag' => 'integer', 'commented_flag' => 'integer', 'status' => 'integer', 'view_count' => 'integer', 'comment_count' => 'integer', 'collection_count' => 'integer', 'zan_count' => 'integer', 'share_count' => 'integer', 'user_id' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    public static function getPageList(int $page, int $size, array $columns = ['*']): LengthAwarePaginatorInterface
+    {
+        return self::paginate($size, $columns, Page::PAGE_NAME, $page);
+    }
 }

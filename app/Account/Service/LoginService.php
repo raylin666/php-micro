@@ -29,14 +29,10 @@ class LoginService extends Service
      */
     public function login(string $username, string $password): array
     {
-        if (empty($username) || empty($password)) {
-            return error(ErrorCode::ACCOUNT_OR_PASSWORD_ERROR);
-        }
-
         /** @var Account $account */
         [$token, $account] = $this->loginLogic->login($username, $password);
         if (empty($account)) {
-            return error(ErrorCode::LOGIN_ERROR);
+            return error(ErrorCode::ACCOUNT_LOGIN_ERROR);
         }
 
         $account = Account::getInfo($account);
@@ -52,7 +48,7 @@ class LoginService extends Service
     {
         $account = $this->getContextAccount();
         if (empty($account)) {
-            return error(ErrorCode::INVALID_IDENTITY_ERROR);
+            return error(ErrorCode::ACCOUNT_INVALID_IDENTITY_ERROR);
         }
 
         $account = $this->loginLogic->logout($account);

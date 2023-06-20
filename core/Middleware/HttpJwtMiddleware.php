@@ -70,20 +70,20 @@ class HttpJwtMiddleware implements MiddlewareInterface
         // 获取账号ID
         $accountId = intval($this->jwt->getTokenClaims($token)->get('jti'));
         if ($accountId <= 0) {
-            return error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
+            error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
         }
 
         $account = Account::getFindById($accountId);
         if (empty($account)) {
-            return error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
+            error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
         }
         // 目前只支持单端登录, 故匹配当前登录的TOKEN和当前提交的TOKEN对比
         $currentLoginToken = $account->getAttributeValue('current_login_token');
         if (empty($currentLoginToken)) {
-            return error(ErrorCode::INVALID_IDENTITY_ERROR);
+            error(ErrorCode::ACCOUNT_INVALID_IDENTITY_ERROR);
         }
         if ($currentLoginToken != $authorization) {
-            return error(ErrorCode::ACCOUNT_LOGIN_OTHER_REGION_ERROR);
+            error(ErrorCode::ACCOUNT_LOGIN_OTHER_REGION_ERROR);
         }
 
         // 设置上下文账号信息

@@ -29,6 +29,10 @@ class LoginLogic extends Logic
      */
     public function login(string $username, string $password): array
     {
+        if (empty($username) || empty($password)) {
+            return error(ErrorCode::ACCOUNT_OR_PASSWORD_ERROR);
+        }
+
         $account = Account::getFindByUsername($username);
         if (empty($account)) {
             return error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);

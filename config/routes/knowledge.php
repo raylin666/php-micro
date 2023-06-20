@@ -14,5 +14,14 @@ use App\Knowledge\Controller\ArticleController;
 
 // 文章模块
 Router::addGroup('/article', function () {
+    // 获取文章列表
     Router::get('/list', [ArticleController::class, 'list']);
+    // 新增文章
+    Router::post('/add', [ArticleController::class, 'add']);
+    // 更新文章
+    Router::put('/update/{id}', [ArticleController::class, 'update']);
+    // 修改文章属性
+    Router::patch('/update/{id}/{field}', [ArticleController::class, 'updateField']);
+    // 删除文章
+    Router::delete('/delete/{id}', [ArticleController::class, 'delete']);
 });

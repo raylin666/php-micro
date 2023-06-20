@@ -52,6 +52,10 @@ class ErrorCode extends AbstractConstants
      * @Message("删除数据失败")
      */
     public const SYSTEM_DELETE_DATA_ERROR = 100004;
+    /**
+     * @Message("请求参数错误")
+     */
+    public const SYSTEM_REQUEST_PARAMS_ERROR = 200001;
 
     /**
      * 账号相关错误状态码 01.
@@ -59,11 +63,11 @@ class ErrorCode extends AbstractConstants
     /**
      * @Message("无效身份")
      */
-    public const INVALID_IDENTITY_ERROR = 101001;
+    public const ACCOUNT_INVALID_IDENTITY_ERROR = 101001;
     /**
      * @Message("登录失败, 请联系管理员")
      */
-    public const LOGIN_ERROR = 101002;
+    public const ACCOUNT_LOGIN_ERROR = 101002;
     /**
      * @Message("账号或密码错误")
      */

@@ -11,7 +11,25 @@ declare(strict_types=1);
  */
 namespace Core\Traits;
 
+use Hyperf\Contract\LengthAwarePaginatorInterface;
+
 trait ServiceTrait
 {
-
+    /**
+     * 组装分页数据 (用来响应数据).
+     * @param LengthAwarePaginatorInterface $lengthAwarePaginator
+     * @return array
+     */
+    public function assemblePaginator(LengthAwarePaginatorInterface $lengthAwarePaginator): array
+    {
+        return [
+            'list' => $lengthAwarePaginator->items(),
+            'total' => $lengthAwarePaginator->total(),
+            'current_page' => $lengthAwarePaginator->currentPage(),
+            'last_page' => $lengthAwarePaginator->lastPage(),
+            'size' => $lengthAwarePaginator->perPage(),
+            'prev_page_url' => $lengthAwarePaginator->previousPageUrl(),
+            'next_page_url' => $lengthAwarePaginator->nextPageUrl(),
+        ];
+    }
 }

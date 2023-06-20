@@ -82,12 +82,12 @@ class Account extends Model
         return PasswordHelper::passwordVerify($password, $hash);
     }
 
-    public static function getFindById(int $id, $columns = ['*'])
+    public static function getFindById(int $id, array $columns = ['*'])
     {
         return self::where('id', $id)->select($columns)->first();
     }
 
-    public static function getFindByUsername(string $username, $columns = ['*'])
+    public static function getFindByUsername(string $username, array $columns = ['*'])
     {
         return self::where('username', $username)->select($columns)->first();
     }
