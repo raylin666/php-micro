@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Knowledge\Service;
 
 use App\Knowledge\Logic\ArticleLogic;
+use Core\Constants\ErrorCode;
 use Core\Constants\Page;
 use Hyperf\Di\Annotation\Inject;
 
@@ -32,8 +33,25 @@ class ArticleService extends Service
         return $this->assemblePaginator($lengthAwarePaginator);
     }
 
-    public function add()
+    /**
+     * 新增文章.
+     * @param array $data
+     * @return array
+     */
+    public function add(array $data): array
     {
+        $id = $this->articleLogic->add($data);
+        return $this->articleLogic->info($id);
+    }
+
+    /**
+     * 获取文章信息.
+     * @param int $id 文章ID
+     * @return array
+     */
+    public function info(int $id): array
+    {
+        return $this->articleLogic->info($id);
     }
 
     public function update()

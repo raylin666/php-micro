@@ -32,7 +32,7 @@ class LoginService extends Service
         /** @var Account $account */
         [$token, $account] = $this->loginLogic->login($username, $password);
         if (empty($account)) {
-            return error(ErrorCode::ACCOUNT_LOGIN_ERROR);
+            error(ErrorCode::ACCOUNT_LOGIN_ERROR);
         }
 
         $account = Account::getInfo($account);
@@ -48,7 +48,7 @@ class LoginService extends Service
     {
         $account = $this->getContextAccount();
         if (empty($account)) {
-            return error(ErrorCode::ACCOUNT_INVALID_IDENTITY_ERROR);
+            error(ErrorCode::ACCOUNT_INVALID_IDENTITY_ERROR);
         }
 
         $account = $this->loginLogic->logout($account);

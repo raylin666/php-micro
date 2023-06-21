@@ -30,18 +30,18 @@ class LoginLogic extends Logic
     public function login(string $username, string $password): array
     {
         if (empty($username) || empty($password)) {
-            return error(ErrorCode::ACCOUNT_OR_PASSWORD_ERROR);
+            error(ErrorCode::ACCOUNT_OR_PASSWORD_ERROR);
         }
 
         $account = Account::getFindByUsername($username);
         if (empty($account)) {
-            return error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
+            error(ErrorCode::ACCOUNT_NOT_EXIST_ERROR);
         }
         if (Account::passwordVerify($password, $account->getAttributeValue('password')) === false) {
-            return error(ErrorCode::ACCOUNT_OR_PASSWORD_ERROR);
+            error(ErrorCode::ACCOUNT_OR_PASSWORD_ERROR);
         }
         if ($account->getAttributeValue('status') != Enum::STATUS_ON) {
-            return error(ErrorCode::ACCOUNT_FROZEN_ERROR);
+            error(ErrorCode::ACCOUNT_FROZEN_ERROR);
         }
 
         // 更新登录信息
@@ -52,7 +52,7 @@ class LoginLogic extends Logic
         $account->setAttribute('last_login_at', $now);
         empty($account->getAttributeValue('first_login_at')) && $account->setAttribute('first_login_at', $now);
         if (! $account->save()) {
-            return error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
+            error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
         }
 
         return [$token, $account];
@@ -67,7 +67,7 @@ class LoginLogic extends Logic
     {
         $account->setAttribute('current_login_token', '');
         if (! $account->save()) {
-            return error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
+            error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
         }
 
         return $account;

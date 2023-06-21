@@ -20,8 +20,8 @@ class CreateArticleTable extends Migration
             $table->string('summary', 140)->default('')->comment('文章摘要');
             $table->string('cover', 160)->default('')->comment('文章封面图片');
             $table->smallInteger('sort', false, true)->default(0)->comment('文章排序');
-            $table->tinyInteger('recommend_flag')->default(0)->comment('文章推荐标识 0:未推荐，1:已推荐');
-            $table->tinyInteger('commented_flag')->default(1)->comment('文章是否允许评论 1:允许，0:不允许');
+            $table->tinyInteger('recommend_flag')->default(0)->comment('文章推荐标识 0:未推荐 1:已推荐');
+            $table->tinyInteger('commented_flag')->default(1)->comment('文章是否允许评论 0:不允许 1:允许');
             $table->tinyInteger('status')->default(0)->comment('文章状态 0:已关闭 1:已开启');
             $table->integer('view_count', false, true)->default(0)->comment('文章浏览量');
             $table->integer('comment_count', false, true)->default(0)->comment('文章评论数');

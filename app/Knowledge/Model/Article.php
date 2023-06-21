@@ -13,6 +13,7 @@ namespace App\Knowledge\Model;
 
 use Core\Constants\Page;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
+use Hyperf\Database\Model\SoftDeletes;
 
 /**
  * @property int $id 主键
@@ -37,6 +38,8 @@ use Hyperf\Contract\LengthAwarePaginatorInterface;
  */
 class Article extends Model
 {
+    use SoftDeletes;
+
     /**
      * The table associated with the model.
      */
@@ -52,8 +55,46 @@ class Article extends Model
      */
     protected array $casts = ['id' => 'integer', 'sort' => 'integer', 'recommend_flag' => 'integer', 'commented_flag' => 'integer', 'status' => 'integer', 'view_count' => 'integer', 'comment_count' => 'integer', 'collection_count' => 'integer', 'zan_count' => 'integer', 'share_count' => 'integer', 'user_id' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
-    public static function getPageList(int $page, int $size, array $columns = ['*']): LengthAwarePaginatorInterface
+    public static function getPageList(int $page, int $size): LengthAwarePaginatorInterface
     {
-        return self::paginate($size, $columns, Page::PAGE_NAME, $page);
+        $result = self::join('article_extend', 'article.id', '=', 'article_extend.article_id')
+            ->orderByDesc('article.id')
+            ->paginate(
+                $size,
+                [
+                    'article.*', 'source', 'source_url', 'content', 'keyword', 'attachment_path',
+                ],
+                Page::PAGE_NAME,
+                $page
+            );
+        foreach ($result->items() as &$item) {
+            $item['keyword'] = json_decode($item['keyword'], true);
+            $item['attachment_path'] = json_decode($item['attachment_path'], true);
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取文章信息 - 包含扩展表.
+     * @param int $id 文章ID
+     */
+    public static function getInfo(int $id): ?array
+    {
+        $join = self::withTrashed()
+            ->join('article_extend', 'article.id', '=', 'article_extend.article_id')
+            ->where('article.id', $id)
+            ->select([
+                'article.*', 'source', 'source_url', 'content', 'keyword', 'attachment_path',
+            ]);
+        $result = $join->first();
+        if (empty($result)) {
+            return null;
+        }
+
+        $result = $result->toArray();
+        $result['keyword'] = json_decode($result['keyword'], true);
+        $result['attachment_path'] = json_decode($result['attachment_path'], true);
+        return $result;
     }
 }

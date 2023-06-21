@@ -45,17 +45,29 @@ class ErrorCode extends AbstractConstants
      */
     public const SYSTEM_INSERT_DATA_ERROR = 100002;
     /**
+     * @Message("查询数据失败")
+     */
+    public const SYSTEM_SELECT_DATA_ERROR = 100003;
+    /**
      * @Message("更新数据失败")
      */
-    public const SYSTEM_UPDATE_DATA_ERROR = 100003;
+    public const SYSTEM_UPDATE_DATA_ERROR = 100004;
     /**
      * @Message("删除数据失败")
      */
-    public const SYSTEM_DELETE_DATA_ERROR = 100004;
+    public const SYSTEM_DELETE_DATA_ERROR = 100005;
+    /**
+     * @Message("未知错误, 请联系管理员")
+     */
+    public const SYSTEM_UNKNOWN_ERROR = 100006;
     /**
      * @Message("请求参数错误")
      */
     public const SYSTEM_REQUEST_PARAMS_ERROR = 200001;
+    /**
+     * @Message("查询数据不存在")
+     */
+    public const SYSTEM_DATA_NOT_EXISTS_ERROR = 200002;
 
     /**
      * 账号相关错误状态码 01.

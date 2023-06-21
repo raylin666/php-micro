@@ -18,6 +18,8 @@ Router::addGroup('/article', function () {
     Router::get('/list', [ArticleController::class, 'list']);
     // 新增文章
     Router::post('/add', [ArticleController::class, 'add']);
+    // 获取文章信息
+    Router::get('/info/{id}', [ArticleController::class, 'info']);
     // 更新文章
     Router::put('/update/{id}', [ArticleController::class, 'update']);
     // 修改文章属性

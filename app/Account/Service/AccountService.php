@@ -28,7 +28,7 @@ class AccountService extends Service
     {
         $account = $this->getContextAccount();
         if (empty($account)) {
-            return error(ErrorCode::ACCOUNT_INVALID_IDENTITY_ERROR);
+            error(ErrorCode::ACCOUNT_INVALID_IDENTITY_ERROR);
         }
 
         return $this->accountLogic->info($account);

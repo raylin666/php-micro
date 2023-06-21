@@ -11,8 +11,6 @@ declare(strict_types=1);
  */
 namespace App\Knowledge\Model;
 
-
-
 /**
  * @property int $id 主键
  * @property int $article_id 文章ID
@@ -24,6 +22,8 @@ namespace App\Knowledge\Model;
  */
 class ArticleExtend extends Model
 {
+    public bool $timestamps = false;
+
     /**
      * The table associated with the model.
      */
@@ -38,4 +38,34 @@ class ArticleExtend extends Model
      * The attributes that should be cast to native types.
      */
     protected array $casts = ['id' => 'integer', 'article_id' => 'integer'];
+
+    public function setKeywordAttribute(string $value): void
+    {
+        $decodeValue = json_decode($value, true);
+        if (json_last_error()) {
+            $this->attributes['keyword'] = json_encode([]);
+        } else {
+            $this->attributes['keyword'] = json_encode(array_values(array_unique(array_filter($decodeValue))), JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    public function getKeywordAttribute()
+    {
+        return json_decode($this->attributes['keyword'], true);
+    }
+
+    public function setAttachmentPathAttribute(string $value): void
+    {
+        $decodeValue = json_decode($value, true);
+        if (json_last_error()) {
+            $this->attributes['attachment_path'] = json_encode([]);
+        } else {
+            $this->attributes['attachment_path'] = json_encode(array_values(array_unique(array_filter($decodeValue))), JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    public function getAttachmentPathAttribute()
+    {
+        return json_decode($this->attributes['attachment_path'], true);
+    }
 }

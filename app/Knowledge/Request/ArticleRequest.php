@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 namespace App\Knowledge\Request;
 
+use Hyperf\Validation\Rule;
+
 class ArticleRequest extends Request
 {
     /**
@@ -34,6 +36,26 @@ class ArticleRequest extends Request
         return [
             'page' => 'numeric|min:1',
             'size' => 'numeric|min:1',
+        ];
+    }
+
+    public function addRules(): array
+    {
+        return [
+            'title' => 'required|string|min:3|max:30',
+            'author' => 'required|string',
+            'summary' => 'required|max:140',
+            'cover' => 'required|url',
+            'sort' => 'numeric|min:0|max:65535',
+            'recommend_flag' => [Rule::in(['0', '1'])],
+            'commented_flag' => [Rule::in(['0', '1'])],
+            'status' => [Rule::in(['0', '1'])],
+            'user_id' => 'required|numeric',
+            'source' => 'string|max:32',
+            'source_url' => 'url',
+            'content' => 'required',
+            'keyword' => 'json',
+            'attachment_path' => 'json',
         ];
     }
 

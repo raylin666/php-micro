@@ -24,6 +24,8 @@ class ArticleController extends Controller
 
     /**
      * 获取文章列表.
+     * @param ArticleRequest $request
+     * @return ResponseInterface
      */
     public function list(ArticleRequest $request): ResponseInterface
     {
@@ -33,9 +35,25 @@ class ArticleController extends Controller
         return $this->response->json($this->articleService->list($page, $size));
     }
 
-    public function add(): ResponseInterface
+    /**
+     * 新增文章.
+     * @param ArticleRequest $request
+     * @return ResponseInterface
+     */
+    public function add(ArticleRequest $request): ResponseInterface
     {
-        return $this->response->json($this->articleService->add());
+        $data = $request->validated();
+        return $this->response->json($this->articleService->add($data));
+    }
+
+    /**
+     * 获取文章信息.
+     * @param int $id 文章ID
+     * @return ResponseInterface
+     */
+    public function info(int $id): ResponseInterface
+    {
+        return $this->response->json($this->articleService->info($id));
     }
 
     public function update(): ResponseInterface
