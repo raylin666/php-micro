@@ -9,10 +9,12 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\Server\Event;
 use Hyperf\HttpServer\Server as HttpServer;
+use Hyperf\Server\Event;
 use Hyperf\Server\ServerInterface;
+use Hyperf\WebSocketServer\Server as WebSocketServer;
 use Swoole\Constant;
+use Core\Middleware\HttpCoreMiddleware;
 
 return [
     'mode' => SWOOLE_PROCESS,
@@ -25,6 +27,21 @@ return [
             'sock_type' => SWOOLE_SOCK_TCP,
             'callbacks' => [
                 Event::ON_REQUEST => [HttpServer::class, 'onRequest'],
+            ],
+        ],
+        [
+            'name' => 'websocket',
+            'type' => ServerInterface::SERVER_WEBSOCKET,
+            'host' => '0.0.0.0',
+            'port' => 9502,
+            'sock_type' => SWOOLE_SOCK_TCP,
+            'callbacks' => [
+                Event::ON_HAND_SHAKE => [WebSocketServer::class, 'onHandShake'],
+                Event::ON_MESSAGE => [WebSocketServer::class, 'onMessage'],
+                Event::ON_CLOSE => [WebSocketServer::class, 'onClose'],
+            ],
+            'middlewares' => [
+                HttpCoreMiddleware::class,
             ],
         ],
     ],

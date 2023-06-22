@@ -11,6 +11,11 @@ declare(strict_types=1);
  */
 use Hyperf\HttpServer\Router\Router;
 
+// WebSocket 服务
+Router::addServer('websocket', function () {
+    include_once 'routes/websocket.php';
+});
+
 // 公共路由
 Router::addGroup('/', function () {
     include_once 'routes/base.php';

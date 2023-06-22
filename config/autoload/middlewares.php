@@ -18,4 +18,5 @@ return [
         HttpJwtMiddleware::class,
         ValidationMiddleware::class,
     ],
+    'websocket' => [],
 ];
