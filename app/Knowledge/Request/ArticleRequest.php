@@ -47,8 +47,8 @@ class ArticleRequest extends Request
             'summary' => 'required|max:140',
             'cover' => 'required|url',
             'sort' => 'numeric|min:0|max:65535',
-            'recommend_flag' => [Rule::in(['0', '1'])],
-            'commented_flag' => [Rule::in(['0', '1'])],
+            'recommend_flag' => 'boolean',
+            'commented_flag' => 'boolean',
             'status' => [Rule::in(['0', '1'])],
             'user_id' => 'required|numeric',
             'source' => 'string|max:32',
@@ -56,6 +56,33 @@ class ArticleRequest extends Request
             'content' => 'required',
             'keyword' => 'json',
             'attachment_path' => 'json',
+        ];
+    }
+
+    public function updateRules(): array
+    {
+        return [
+            'title' => 'required|string|min:3|max:30',
+            'author' => 'required|string',
+            'summary' => 'required|max:140',
+            'cover' => 'required|url',
+            'sort' => 'numeric|min:0|max:65535',
+            'recommend_flag' => 'boolean',
+            'commented_flag' => 'boolean',
+            'status' => [Rule::in(['0', '1'])],
+            'user_id' => 'required|numeric',
+            'source' => 'string|max:32',
+            'source_url' => 'url',
+            'content' => 'required',
+            'keyword' => 'json',
+            'attachment_path' => 'json',
+        ];
+    }
+
+    public function deleteRules(): array
+    {
+        return [
+            'force' => 'boolean',
         ];
     }
 

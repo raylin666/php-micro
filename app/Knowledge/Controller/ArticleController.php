@@ -56,18 +56,33 @@ class ArticleController extends Controller
         return $this->response->json($this->articleService->info($id));
     }
 
-    public function update(): ResponseInterface
+    /**
+     * 更新文章.
+     * @param ArticleRequest $request
+     * @param int            $id
+     * @return ResponseInterface
+     */
+    public function update(ArticleRequest $request, int $id): ResponseInterface
     {
-        return $this->response->json($this->articleService->update());
+        $data = $request->validated();
+        return $this->response->json($this->articleService->update($id, $data));
     }
 
-    public function updateField(): ResponseInterface
+    /**
+     * 修改文章属性.
+     * @param int            $id
+     * @param string         $field
+     * @return ResponseInterface
+     */
+    public function updateField(int $id, string $field): ResponseInterface
     {
-        return $this->response->json($this->articleService->updateField());
+        $value = $this->request->post('value');
+        return $this->response->json($this->articleService->updateField($id, $field, $value));
     }
 
-    public function delete(): ResponseInterface
+    public function delete(ArticleRequest $request, int $id): ResponseInterface
     {
-        return $this->response->json($this->articleService->delete());
+        $data = $request->validated();
+        return $this->response->json($this->articleService->delete($id, boolval($data['force'] ?? false)));
     }
 }

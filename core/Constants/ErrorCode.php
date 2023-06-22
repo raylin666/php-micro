@@ -65,9 +65,13 @@ class ErrorCode extends AbstractConstants
      */
     public const SYSTEM_REQUEST_PARAMS_ERROR = 200001;
     /**
-     * @Message("查询数据不存在")
+     * @Message("数据资源不存在")
      */
     public const SYSTEM_DATA_NOT_EXISTS_ERROR = 200002;
+    /**
+     * @Message("无效指令")
+     */
+    public const SYSTEM_INVALID_INSTRUCTION_ERROR = 200003;
 
     /**
      * 账号相关错误状态码 01.

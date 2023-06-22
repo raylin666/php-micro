@@ -68,4 +68,14 @@ class ArticleExtend extends Model
     {
         return json_decode($this->attributes['attachment_path'], true);
     }
+
+    public static function getByArticleId(int $articleId)
+    {
+        return self::where('article_id', $articleId)->first();
+    }
+
+    public static function deleteByArticleId(int $articleId)
+    {
+        return self::where('article_id', $articleId)->delete();
+    }
 }

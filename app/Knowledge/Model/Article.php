@@ -97,4 +97,11 @@ class Article extends Model
         $result['attachment_path'] = json_decode($result['attachment_path'], true);
         return $result;
     }
+
+    public static function hasInfo(int $id): bool
+    {
+        return self::join('article_extend', 'article.id', '=', 'article_extend.article_id')
+            ->where('article.id', $id)
+            ->exists();
+    }
 }

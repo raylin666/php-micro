@@ -13,11 +13,13 @@ namespace App\Knowledge\Logic;
 
 use App\Knowledge\Model\Article;
 use App\Knowledge\Model\ArticleExtend;
+use Carbon\Carbon;
 use Core\Constants\ErrorCode;
 use Core\Exception\BusinessException;
 use Exception;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
 use Hyperf\DbConnection\Db;
+
 use function Hyperf\Support\make;
 
 class ArticleLogic extends Logic
@@ -39,8 +41,7 @@ class ArticleLogic extends Logic
 
     /**
      * 新增文章.
-     * @param array $data
-     * @return int
+     * @param array $data 数据内容
      */
     public function add(array $data): int
     {
@@ -85,8 +86,10 @@ class ArticleLogic extends Logic
                 error(ErrorCode::SYSTEM_INSERT_DATA_ERROR);
             }
 
+            $id = $article->getAttributeValue('id');
+
             $articleExtend = make(ArticleExtend::class);
-            $articleExtend->setAttribute('article_id', $article->getAttributeValue('id'));
+            $articleExtend->setAttribute('article_id', $id);
             $articleExtend->setAttribute('source', $source);
             $articleExtend->setAttribute('source_url', $sourceUrl);
             $articleExtend->setAttribute('content', $content);
@@ -107,13 +110,12 @@ class ArticleLogic extends Logic
             error(ErrorCode::SYSTEM_UNKNOWN_ERROR);
         }
 
-        return $article->getAttributeValue('id');
+        return $id;
     }
 
     /**
      * 获取文章信息.
      * @param int $id 文章ID
-     * @return array
      */
     public function info(int $id): array
     {
@@ -151,5 +153,143 @@ class ArticleLogic extends Logic
             'keyword' => $result['keyword'],
             'attachment_path' => $result['attachment_path'],
         ];
+    }
+
+    /**
+     * 更新文章.
+     * @param int $id 文章ID
+     * @param array $data 更新内容
+     */
+    public function update(int $id, array $data): int
+    {
+        if (! Article::hasInfo($id)) {
+            error(ErrorCode::SYSTEM_DATA_NOT_EXISTS_ERROR);
+        }
+
+        $title = $data['title'] ?? '';
+        $author = $data['author'] ?? '';
+        $summary = $data['summary'] ?? '';
+        $cover = $data['cover'] ?? '';
+        $userId = intval($data['user_id'] ?? 0);
+        $content = $data['content'] ?? '';
+
+        if (empty($title)
+            || empty($author)
+            || empty($summary)
+            || empty($cover)
+            || empty($userId)
+            || empty($content)) {
+            error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
+
+        Db::beginTransaction();
+
+        try {
+            $article = Article::find($id);
+            $article->setAttribute('title', $title);
+            $article->setAttribute('author', $author);
+            $article->setAttribute('summary', $summary);
+            $article->setAttribute('cover', $cover);
+            $article->setAttribute('user_id', $userId);
+            $article->setAttribute('updated_at', Carbon::now());
+            (isset($data['sort']) && is_numeric($data['sort'])) && $article->setAttribute('sort', $data['sort']);
+            (isset($data['recommend_flag']) && is_numeric($data['recommend_flag'])) && $article->setAttribute('recommend_flag', $data['recommend_flag']);
+            (isset($data['commented_flag']) && is_numeric($data['commented_flag'])) && $article->setAttribute('commented_flag', $data['commented_flag']);
+            (isset($data['status']) && is_numeric($data['status'])) && $article->setAttribute('status', $data['status']);
+            if (! $article->save()) {
+                error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
+            }
+
+            $articleExtend = ArticleExtend::getByArticleId($id);
+            $articleExtend->setAttribute('content', $content);
+            (isset($data['source']) && $data['source']) && $articleExtend->setAttribute('source', $data['source']);
+            (isset($data['source_url']) && $data['source_url']) && $articleExtend->setAttribute('source_url', $data['source_url']);
+            (isset($data['keyword']) && $data['keyword']) && $articleExtend->setAttribute('keyword', $data['keyword']);
+            (isset($data['attachment_path']) && $data['attachment_path']) && $articleExtend->setAttribute('attachment_path', $data['attachment_path']);
+            if (! $articleExtend->save()) {
+                error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
+            }
+
+            Db::commit();
+        } catch (Exception|BusinessException $exception) {
+            Db::rollBack();
+
+            if ($exception instanceof BusinessException) {
+                error($exception->getCode());
+            }
+
+            error(ErrorCode::SYSTEM_UNKNOWN_ERROR);
+        }
+
+        return $id;
+    }
+
+    /**
+     * 修改文章属性.
+     * @param int $id 文章ID
+     * @param string $field 属性字段
+     * @param string $value 属性值
+     */
+    public function updateField(int $id, string $field, string $value): Article
+    {
+        if (empty($value)) {
+            error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
+
+        if (! Article::hasInfo($id)) {
+            error(ErrorCode::SYSTEM_DATA_NOT_EXISTS_ERROR);
+        }
+
+        $article = Article::find($id);
+        // 过滤暂时不支持的字段
+        switch ($field) {
+            case 'sort':
+            case 'recommend_flag':
+            case 'commented_flag':
+            case 'status':
+                $value = intval($value);
+                $article->setAttribute($field, $value);
+                break;
+            default:
+                error(ErrorCode::SYSTEM_INVALID_INSTRUCTION_ERROR);
+        }
+
+        if (! $article->save()) {
+            error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
+        }
+
+        return $article;
+    }
+
+    /**
+     * 删除文章.
+     * @param int $id 文章ID
+     * @param bool $force 是否强制删除/物理删除
+     * @throws Exception
+     */
+    public function delete(int $id, bool $force): bool
+    {
+        // 物理删除
+        if ($force) {
+            $article = Article::withTrashed()->find($id);
+            if (empty($article)) {
+                error(ErrorCode::SYSTEM_DATA_NOT_EXISTS_ERROR);
+            }
+
+            if ($article->forceDelete()) {
+                ArticleExtend::deleteByArticleId($id);
+            }
+
+            return true;
+        }
+
+        // 软删除
+        $article = Article::find($id);
+        if (empty($article)) {
+            error(ErrorCode::SYSTEM_DATA_NOT_EXISTS_ERROR);
+        }
+
+        $article->delete();
+        return true;
     }
 }
