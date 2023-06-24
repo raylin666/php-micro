@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Knowledge\Model;
 
+use App\Account\Model\Account;
 use Core\Constants\Page;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
 use Hyperf\Database\Model\SoftDeletes;
@@ -55,6 +56,12 @@ class Article extends Model
      */
     protected array $casts = ['id' => 'integer', 'sort' => 'integer', 'recommend_flag' => 'integer', 'commented_flag' => 'integer', 'status' => 'integer', 'view_count' => 'integer', 'comment_count' => 'integer', 'collection_count' => 'integer', 'zan_count' => 'integer', 'share_count' => 'integer', 'user_id' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
 
+    public function setUserIdAttribute(int $value): void
+    {
+        $this->attributes['user_id'] = $value;
+        $this->attributes['author'] = Account::getFindById($value, ['username'])['username'] ?? '';
+    }
+
     public static function getPageList(int $page, int $size): LengthAwarePaginatorInterface
     {
         $result = self::join('article_extend', 'article.id', '=', 'article_extend.article_id')
@@ -62,14 +69,15 @@ class Article extends Model
             ->paginate(
                 $size,
                 [
-                    'article.*', 'source', 'source_url', 'content', 'keyword', 'attachment_path',
+                    'article.id', 'title', 'author', 'cover', 'sort', 'recommend_flag', 'commented_flag', 'status',
+                    'view_count', 'comment_count', 'collection_count', 'zan_count', 'share_count', 'user_id',
+                    'last_commented_at', 'created_at', 'updated_at', 'source', 'source_url', 'keyword',
                 ],
                 Page::PAGE_NAME,
                 $page
             );
         foreach ($result->items() as &$item) {
             $item['keyword'] = json_decode($item['keyword'], true);
-            $item['attachment_path'] = json_decode($item['attachment_path'], true);
         }
 
         return $result;

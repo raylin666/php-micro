@@ -46,7 +46,6 @@ class ArticleLogic extends Logic
     public function add(array $data): int
     {
         $title = $data['title'] ?? '';
-        $author = $data['author'] ?? '';
         $summary = $data['summary'] ?? '';
         $cover = $data['cover'] ?? '';
         $sort = intval($data['sort'] ?? 0);
@@ -61,7 +60,6 @@ class ArticleLogic extends Logic
         $attachmentPath = $data['attachment_path'] ?? '';
 
         if (empty($title)
-            || empty($author)
             || empty($summary)
             || empty($cover)
             || empty($userId)
@@ -74,7 +72,6 @@ class ArticleLogic extends Logic
         try {
             $article = make(Article::class);
             $article->setAttribute('title', $title);
-            $article->setAttribute('author', $author);
             $article->setAttribute('summary', $summary);
             $article->setAttribute('cover', $cover);
             $article->setAttribute('sort', $sort);
@@ -167,14 +164,12 @@ class ArticleLogic extends Logic
         }
 
         $title = $data['title'] ?? '';
-        $author = $data['author'] ?? '';
         $summary = $data['summary'] ?? '';
         $cover = $data['cover'] ?? '';
         $userId = intval($data['user_id'] ?? 0);
         $content = $data['content'] ?? '';
 
         if (empty($title)
-            || empty($author)
             || empty($summary)
             || empty($cover)
             || empty($userId)
@@ -187,7 +182,6 @@ class ArticleLogic extends Logic
         try {
             $article = Article::find($id);
             $article->setAttribute('title', $title);
-            $article->setAttribute('author', $author);
             $article->setAttribute('summary', $summary);
             $article->setAttribute('cover', $cover);
             $article->setAttribute('user_id', $userId);
@@ -232,7 +226,8 @@ class ArticleLogic extends Logic
      */
     public function updateField(int $id, string $field, string $value): Article
     {
-        if (empty($value)) {
+        $value = trim($value);
+        if ($value === '') {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
 
@@ -243,17 +238,19 @@ class ArticleLogic extends Logic
         $article = Article::find($id);
         // 过滤暂时不支持的字段
         switch ($field) {
-            case 'sort':
             case 'recommend_flag':
             case 'commented_flag':
             case 'status':
+                $value = (($value == 'true') || (intval($value) > 0)) ? 1 : 0;
+                break;
+            case 'sort':
                 $value = intval($value);
-                $article->setAttribute($field, $value);
                 break;
             default:
                 error(ErrorCode::SYSTEM_INVALID_INSTRUCTION_ERROR);
         }
 
+        $article->setAttribute($field, $value);
         if (! $article->save()) {
             error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
         }

@@ -36,13 +36,13 @@ class WebSocketController implements OnMessageInterface, OnOpenInterface, OnClos
     {
         // TODO: Implement onOpen() method.
 
-        $server->push($request->fd, 'Opened');
+        // $server->push($request->fd, json_encode(['messageType' => 'notice', 'data' => ['type' => 'success', 'text' => '连接 WebSocket 服务成功']]));
     }
 
     public function onClose($server, int $fd, int $reactorId): void
     {
         // TODO: Implement onClose() method.
 
-        var_dump('closed');
+        // $server->push(json_encode(['messageType' => 'notice', 'data' => ['type' => 'error', 'text' => '已关闭 WebSocket 服务']]));
     }
 }

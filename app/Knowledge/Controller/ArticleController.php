@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Knowledge\Controller;
 
+use Exception;
 use App\Knowledge\Request\ArticleRequest;
 use App\Knowledge\Service\ArticleService;
 use Core\Constants\Page;
@@ -80,6 +81,13 @@ class ArticleController extends Controller
         return $this->response->json($this->articleService->updateField($id, $field, $value));
     }
 
+    /**
+     * 删除文章.
+     * @param ArticleRequest $request
+     * @param int            $id
+     * @return ResponseInterface
+     * @throws Exception
+     */
     public function delete(ArticleRequest $request, int $id): ResponseInterface
     {
         $data = $request->validated();

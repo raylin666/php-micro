@@ -43,7 +43,6 @@ class ArticleRequest extends Request
     {
         return [
             'title' => 'required|string|min:3|max:30',
-            'author' => 'required|string',
             'summary' => 'required|max:140',
             'cover' => 'required|url',
             'sort' => 'numeric|min:0|max:65535',
@@ -63,7 +62,6 @@ class ArticleRequest extends Request
     {
         return [
             'title' => 'required|string|min:3|max:30',
-            'author' => 'required|string',
             'summary' => 'required|max:140',
             'cover' => 'required|url',
             'sort' => 'numeric|min:0|max:65535',
