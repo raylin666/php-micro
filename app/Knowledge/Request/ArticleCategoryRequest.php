@@ -13,7 +13,7 @@ namespace App\Knowledge\Request;
 
 use Hyperf\Validation\Rule;
 
-class ArticleRequest extends Request
+class ArticleCategoryRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,51 +31,34 @@ class ArticleRequest extends Request
         return [];
     }
 
-    public function listRules(): array
-    {
-        return [
-            'page' => 'numeric|min:1',
-            'size' => 'numeric|min:1',
-        ];
-    }
-
     public function addRules(): array
     {
         return [
-            'title' => 'required|string|min:3|max:30',
-            'summary' => 'required|max:140',
-            'cover' => 'required|url',
+            'name' => 'required|string|min:1|max:12|unique:article_category,name',
+            'pid' => 'numeric|min:0',
+            'icon' => 'url',
+            'color' => 'string|max:30',
             'sort' => 'numeric|min:0|max:65535',
-            'recommend_flag' => 'boolean',
-            'commented_flag' => 'boolean',
             'status' => [Rule::in(['0', '1'])],
-            'user_id' => 'required|numeric',
-            'source' => 'string|max:32',
-            'source_url' => 'url',
-            'content' => 'required',
-            'keyword' => 'array',
-            'attachment_path' => 'array',
-            'category' => 'required|array',
         ];
     }
 
     public function updateRules(): array
     {
         return [
-            'title' => 'required|string|min:3|max:30',
-            'summary' => 'required|max:140',
-            'cover' => 'required|url',
+            'name' => [
+                'required',
+                'string',
+                'min:1',
+                'max:12',
+                'unique:article_category,name',
+                Rule::unique('article_category')->ignore($this->getRequest()->id),
+            ],
+            'pid' => 'numeric|min:0',
+            'icon' => 'url',
+            'color' => 'string|max:30',
             'sort' => 'numeric|min:0|max:65535',
-            'recommend_flag' => 'boolean',
-            'commented_flag' => 'boolean',
             'status' => [Rule::in(['0', '1'])],
-            'user_id' => 'required|numeric',
-            'source' => 'string|max:32',
-            'source_url' => 'url',
-            'content' => 'required',
-            'keyword' => 'array',
-            'attachment_path' => 'array',
-            'category' => 'required|array',
         ];
     }
 

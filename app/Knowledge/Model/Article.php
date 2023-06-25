@@ -59,7 +59,7 @@ class Article extends Model
     public function setUserIdAttribute(int $value): void
     {
         $this->attributes['user_id'] = $value;
-        $this->attributes['author'] = Account::getFindById($value, ['username'])['username'] ?? '';
+        $this->attributes['author'] = Account::getFindById($value, ['real_username'])['real_username'] ?? '';
     }
 
     public static function getPageList(int $page, int $size): LengthAwarePaginatorInterface
@@ -87,7 +87,7 @@ class Article extends Model
      * 获取文章信息 - 包含扩展表.
      * @param int $id 文章ID
      */
-    public static function getInfo(int $id): ?array
+    public static function getInfoById(int $id): ?array
     {
         $join = self::withTrashed()
             ->join('article_extend', 'article.id', '=', 'article_extend.article_id')
@@ -106,7 +106,7 @@ class Article extends Model
         return $result;
     }
 
-    public static function hasInfo(int $id): bool
+    public static function hasInfoById(int $id): bool
     {
         return self::join('article_extend', 'article.id', '=', 'article_extend.article_id')
             ->where('article.id', $id)

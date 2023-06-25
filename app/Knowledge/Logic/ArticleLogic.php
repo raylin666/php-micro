@@ -56,14 +56,16 @@ class ArticleLogic extends Logic
         $source = $data['source'] ?? '';
         $sourceUrl = $data['source_url'] ?? '';
         $content = $data['content'] ?? '';
-        $keyword = $data['keyword'] ?? '';
-        $attachmentPath = $data['attachment_path'] ?? '';
+        $keyword = $data['keyword'] ?? [];
+        $attachmentPath = $data['attachment_path'] ?? [];
+        $category = $data['category'] ?? [];
 
         if (empty($title)
             || empty($summary)
             || empty($cover)
             || empty($userId)
-            || empty($content)) {
+            || empty($content)
+            || empty($category)) {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
 
@@ -120,7 +122,7 @@ class ArticleLogic extends Logic
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
 
-        $result = Article::getInfo($id);
+        $result = Article::getInfoById($id);
         if (empty($result)) {
             error(ErrorCode::SYSTEM_DATA_NOT_EXISTS_ERROR);
         }
@@ -159,7 +161,7 @@ class ArticleLogic extends Logic
      */
     public function update(int $id, array $data): int
     {
-        if (! Article::hasInfo($id)) {
+        if (! Article::hasInfoById($id)) {
             error(ErrorCode::SYSTEM_DATA_NOT_EXISTS_ERROR);
         }
 
@@ -168,12 +170,14 @@ class ArticleLogic extends Logic
         $cover = $data['cover'] ?? '';
         $userId = intval($data['user_id'] ?? 0);
         $content = $data['content'] ?? '';
+        $category = $data['category'] ?? [];
 
         if (empty($title)
             || empty($summary)
             || empty($cover)
             || empty($userId)
-            || empty($content)) {
+            || empty($content)
+            || empty($category)) {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
 
@@ -231,24 +235,17 @@ class ArticleLogic extends Logic
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
 
-        if (! Article::hasInfo($id)) {
+        if (! Article::hasInfoById($id)) {
             error(ErrorCode::SYSTEM_DATA_NOT_EXISTS_ERROR);
         }
 
         $article = Article::find($id);
         // 过滤暂时不支持的字段
-        switch ($field) {
-            case 'recommend_flag':
-            case 'commented_flag':
-            case 'status':
-                $value = (($value == 'true') || (intval($value) > 0)) ? 1 : 0;
-                break;
-            case 'sort':
-                $value = intval($value);
-                break;
-            default:
-                error(ErrorCode::SYSTEM_INVALID_INSTRUCTION_ERROR);
-        }
+        $value = match ($field) {
+            'recommend_flag', 'commented_flag', 'status' => (($value == 'true') || (intval($value) > 0)) ? 1 : 0,
+            'sort' => intval($value),
+            default => error(ErrorCode::SYSTEM_INVALID_INSTRUCTION_ERROR),
+        };
 
         $article->setAttribute($field, $value);
         if (! $article->save()) {

@@ -11,7 +11,8 @@ declare(strict_types=1);
  */
 namespace App\Knowledge\Model;
 
-
+use Hyperf\Database\Model\Collection;
+use Hyperf\Database\Model\SoftDeletes;
 
 /**
  * @property int $id 主键
@@ -27,6 +28,8 @@ namespace App\Knowledge\Model;
  */
 class ArticleCategory extends Model
 {
+    use SoftDeletes;
+
     /**
      * The table associated with the model.
      */
@@ -41,4 +44,23 @@ class ArticleCategory extends Model
      * The attributes that should be cast to native types.
      */
     protected array $casts = ['id' => 'integer', 'pid' => 'integer', 'sort' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    /**
+     * 获取父级列表.
+     * @return Collection
+     */
+    public static function getParentList(): Collection
+    {
+        return self::where('pid', 0)->get();
+    }
+
+    public static function getInfoById(int $id)
+    {
+        return self::withTrashed()->where('id', $id)->first();
+    }
+
+    public static function hasInfoById(int $id): bool
+    {
+        return self::where('id', $id)->exists();
+    }
 }

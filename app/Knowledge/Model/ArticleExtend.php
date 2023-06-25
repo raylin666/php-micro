@@ -39,14 +39,9 @@ class ArticleExtend extends Model
      */
     protected array $casts = ['id' => 'integer', 'article_id' => 'integer'];
 
-    public function setKeywordAttribute(string $value): void
+    public function setKeywordAttribute(array $value): void
     {
-        $decodeValue = json_decode($value, true);
-        if (json_last_error()) {
-            $this->attributes['keyword'] = json_encode([]);
-        } else {
-            $this->attributes['keyword'] = json_encode(array_values(array_unique(array_filter($decodeValue))), JSON_UNESCAPED_UNICODE);
-        }
+        $this->attributes['keyword'] = json_encode(array_values(array_unique(array_filter($value))), JSON_UNESCAPED_UNICODE);
     }
 
     public function getKeywordAttribute()
@@ -54,14 +49,9 @@ class ArticleExtend extends Model
         return json_decode($this->attributes['keyword'], true);
     }
 
-    public function setAttachmentPathAttribute(string $value): void
+    public function setAttachmentPathAttribute(array $value): void
     {
-        $decodeValue = json_decode($value, true);
-        if (json_last_error()) {
-            $this->attributes['attachment_path'] = json_encode([]);
-        } else {
-            $this->attributes['attachment_path'] = json_encode(array_values(array_unique(array_filter($decodeValue))), JSON_UNESCAPED_UNICODE);
-        }
+        $this->attributes['attachment_path'] = json_encode(array_values(array_unique(array_filter($value))), JSON_UNESCAPED_UNICODE);
     }
 
     public function getAttachmentPathAttribute()
