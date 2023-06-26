@@ -9,11 +9,11 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\HttpServer\Router\Router;
+namespace App\Base\Request;
 
-Router::get('favicon.ico', function () { return ''; });
+use Core\Abstract\FormRequestAbstract;
 
-Router::get('heartbeat', function () { return 'PONE'; });
+abstract class Request extends FormRequestAbstract
+{
 
-// 上传模块
-Router::addGroup('/upload', function () {});
+}

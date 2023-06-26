@@ -25,9 +25,16 @@ class ArticleCategoryLogic extends Logic
      */
     public function list(): Collection
     {
+        $counts = [];
         $list = ArticleCategory::getParentList();
+        if ($list->count()) {
+            $counts = ArticleCategory::getArticleCountsByIds($list->pluck('id')->toArray());
+            $counts = $counts->toArray();
+            $counts = $counts ? array_column($counts, null, 'category_id') : [];
+        }
+
         foreach ($list as &$item) {
-            $item->article_count = 0;
+            $item['article_count'] = isset($counts[$item['id']]) ? ($counts[$item['id']]['count'] ?? 0) : 0;
         }
 
         return $list;
@@ -79,16 +86,18 @@ class ArticleCategoryLogic extends Logic
             error(ErrorCode::SYSTEM_DATA_NOT_EXISTS_ERROR);
         }
 
+        $category = $category->toArray();
+
         return [
-            'id' => $category->getAttributeValue('id'),
-            'name' => $category->getAttributeValue('name'),
-            'pid' => $category->getAttributeValue('pid'),
-            'icon' => $category->getAttributeValue('icon'),
-            'color' => $category->getAttributeValue('color'),
-            'sort' => $category->getAttributeValue('sort'),
-            'status' => $category->getAttributeValue('status'),
-            'created_at' => $category->getAttributeValue('created_at'),
-            'article_count' => 0,
+            'id' => $id,
+            'name' => $category['name'],
+            'pid' => $category['pid'],
+            'icon' => $category['icon'],
+            'color' => $category['color'],
+            'sort' => $category['sort'],
+            'status' => $category['status'],
+            'created_at' => $category['created_at'],
+            'article_count' => ArticleCategory::getArticleCountById($id),
         ];
     }
 

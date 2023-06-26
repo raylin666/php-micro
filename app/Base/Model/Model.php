@@ -9,11 +9,12 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\HttpServer\Router\Router;
+namespace App\Base\Model;
 
-Router::get('favicon.ico', function () { return ''; });
+use Core\Model\Model as ModelAbstract;
+use Core\Traits\ModelTrait;
 
-Router::get('heartbeat', function () { return 'PONE'; });
-
-// 上传模块
-Router::addGroup('/upload', function () {});
+abstract class Model extends ModelAbstract
+{
+    use ModelTrait;
+}

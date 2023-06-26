@@ -11,8 +11,9 @@ declare(strict_types=1);
  */
 namespace App\Knowledge\Model;
 
-use Hyperf\Database\Model\Collection;
+use Hyperf\Database\Model\Collection as ModelCollection;
 use Hyperf\Database\Model\SoftDeletes;
+use Hyperf\Collection\Collection;
 
 /**
  * @property int $id 主键
@@ -47,9 +48,9 @@ class ArticleCategory extends Model
 
     /**
      * 获取父级列表.
-     * @return Collection
+     * @return ModelCollection
      */
-    public static function getParentList(): Collection
+    public static function getParentList(): ModelCollection
     {
         return self::where('pid', 0)->get();
     }
@@ -62,5 +63,18 @@ class ArticleCategory extends Model
     public static function hasInfoById(int $id): bool
     {
         return self::where('id', $id)->exists();
+    }
+
+    public static function getArticleCountById(int $id): int
+    {
+        return ArticleCategoryRelation::where('category_id', $id)->count();
+    }
+
+    public static function getArticleCountsByIds(array $ids): Collection
+    {
+        return ArticleCategoryRelation::whereIn('category_id', $ids)
+            ->selectRaw('category_id, count(1) as count')
+            ->groupBy(['category_id'])
+            ->get();
     }
 }
