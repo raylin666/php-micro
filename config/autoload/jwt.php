@@ -71,11 +71,4 @@ return [
      * 编码器
      */
     'encoder' => JoseEncoder::class,
-
-    /*
-     * 忽略路由规则
-     */
-    'ignore_route' => [
-        '/account/login',
-    ],
 ];

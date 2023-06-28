@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace Core\Middleware;
 
-use Core\Constants\HttpErrorCode;
+use core\Constants\HttpErrorCode;
 use Core\Decorator\ResponseDecorator;
 use Core\Helper\ApplicationHelper;
 use Hyperf\Codec\Json;
@@ -21,7 +21,6 @@ use Hyperf\HttpServer\CoreMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-
 use function Hyperf\Support\make;
 
 class HttpCoreMiddleware extends CoreMiddleware

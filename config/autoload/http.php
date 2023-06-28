@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 return [
-    'server' => 'MicroAdmin',
+    'server' => 'MicroService',
     'content-type' => 'application/json; charset=utf-8',
     'allow-origin' => '*',
     'allow-method' => 'GET,PUT,POST,DELETE,OPTIONS',

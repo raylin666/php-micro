@@ -9,12 +9,12 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\Validation\Middleware\ValidationMiddleware;
+namespace App\Admin\Model;
 
-return [
-    // 数组内配置您的全局中间件，顺序根据该数组的顺序
-    'http' => [
-        ValidationMiddleware::class,
-    ],
-    'websocket' => [],
-];
+use Core\Model\Model as ModelAbstract;
+use Core\Traits\ModelTrait;
+
+abstract class Model extends ModelAbstract
+{
+    use ModelTrait;
+}

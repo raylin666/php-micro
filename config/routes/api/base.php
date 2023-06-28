@@ -9,12 +9,8 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-use Hyperf\Validation\Middleware\ValidationMiddleware;
+use Hyperf\HttpServer\Router\Router;
 
-return [
-    // 数组内配置您的全局中间件，顺序根据该数组的顺序
-    'http' => [
-        ValidationMiddleware::class,
-    ],
-    'websocket' => [],
-];
+Router::get('favicon.ico', function () { return ''; });
+
+Router::get('heartbeat', function () { return 'PONE'; });

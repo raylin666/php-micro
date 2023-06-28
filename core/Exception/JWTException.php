@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace Core\Exception;
 
-use Core\Constants\HttpErrorCode;
+use core\Constants\HttpErrorCode;
 use Hyperf\Server\Exception\ServerException;
 
 class JWTException extends ServerException

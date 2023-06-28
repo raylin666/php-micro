@@ -13,21 +13,32 @@ use Hyperf\HttpServer\Router\Router;
 
 // WebSocket 服务
 Router::addServer('websocket', function () {
-    include_once 'routes/websocket.php';
+    // 后台服务
+    Router::addGroup('/admin', function () {
+        include_once 'routes/websocket/admin.php';
+    });
 });
 
-// 公共路由
+// 后台服务
+Router::addGroup('/admin', function () {
+    // 上传相关路由
+    Router::addGroup('/upload', function () {
+        include_once 'routes/admin/upload.php';
+    });
+
+    // 账号相关路由
+    Router::addGroup('/account', function () {
+        include_once 'routes/admin/account.php';
+    });
+
+    // 文章相关路由
+    Router::addGroup('/article', function () {
+        include_once 'routes/admin/article.php';
+    });
+});
+
+// 前台服务
 Router::addGroup('/', function () {
-    include_once 'routes/base.php';
+    // 公共路由
+    include_once 'routes/api/base.php';
 });
-
-// 账号相关路由
-Router::addGroup('/account', function () {
-    include_once 'routes/account.php';
-});
-
-// 知识库相关路由
-Router::addGroup('/knowledge', function () {
-    include_once 'routes/knowledge.php';
-});
-

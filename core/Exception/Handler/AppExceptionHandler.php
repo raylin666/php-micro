@@ -26,7 +26,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
-
 use function Hyperf\Support\make;
 
 class AppExceptionHandler extends ExceptionHandler

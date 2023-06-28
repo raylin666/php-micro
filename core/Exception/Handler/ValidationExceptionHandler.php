@@ -20,7 +20,7 @@ declare(strict_types=1);
  */
 namespace Core\Exception\Handler;
 
-use Core\Constants\HttpErrorCode;
+use core\Constants\HttpErrorCode;
 use Core\Decorator\ResponseDecorator;
 use Core\Helper\ApplicationHelper;
 use Hyperf\Codec\Json;
@@ -29,7 +29,6 @@ use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
-
 use function Hyperf\Support\make;
 
 class ValidationExceptionHandler extends ExceptionHandler

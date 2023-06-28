@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace Core\Helper;
 
-use Core\Constants\ErrorCode;
+use core\Constants\ErrorCode;
 use Core\Exception\ErrorException;
 use Core\Exception\JWTException;
 use DateTimeImmutable;
