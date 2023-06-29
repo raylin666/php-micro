@@ -20,7 +20,7 @@ declare(strict_types=1);
  */
 namespace Core\Exception\Handler;
 
-use core\Constants\HttpErrorCode;
+use Core\Constants\HttpErrorCode;
 use Core\Decorator\ResponseDecorator;
 use Core\Helper\ApplicationHelper;
 use Hyperf\Codec\Json;

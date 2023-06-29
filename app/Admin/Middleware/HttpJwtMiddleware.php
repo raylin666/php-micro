@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace App\Admin\Middleware;
 
 use App\Admin\Model\Account;
-use core\Constants\ErrorCode;
+use Core\Constants\ErrorCode;
 use Core\Exception\JWTException;
 use Core\Exception\TokenValidException;
 use Core\Helper\JWTHelper;

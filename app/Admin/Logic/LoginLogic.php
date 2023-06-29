@@ -13,10 +13,11 @@ namespace App\Admin\Logic;
 
 use App\Admin\Model\Account;
 use Carbon\Carbon;
-use Core\Constants\ErrorCode;
 use Core\Constants\Enum;
+use Core\Constants\ErrorCode;
 use Core\Helper\JWTHelper;
 use Core\Helper\RequestHelper;
+
 use function Hyperf\Support\make;
 
 class LoginLogic extends Logic
@@ -25,7 +26,6 @@ class LoginLogic extends Logic
      * 账号登录.
      * @param string $username 登录账号
      * @param string $password 登录密码
-     * @return array
      */
     public function login(string $username, string $password): array
     {
@@ -60,8 +60,6 @@ class LoginLogic extends Logic
 
     /**
      * 账号登出.
-     * @param Account $account
-     * @return Account
      */
     public function logout(Account $account): Account
     {
