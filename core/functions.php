@@ -22,7 +22,13 @@ if (! function_exists('t')) {
     {
         // 调用方式例如: t('validation.accepted')
         $acceptLanguage = ApplicationHelper::getContainer()->get(RequestInterface::class)->getHeaderLine('Accept-Language');
-        $language = ! empty($acceptLanguage) ? explode(',', $acceptLanguage)[0] : 'zh_CN';
+        $language = 'zh_CN';
+        if (! empty($acceptLanguage)) {
+            $language = explode(',', $acceptLanguage)[0];
+            $tansLanguage = str_replace(['_', '-'], '', $language);
+            $language = ($tansLanguage == 'zhCN') ? 'zh_CN' : $language;
+        }
+
         return ApplicationHelper::getContainer()->get(TranslatorInterface::class)->trans($key, $replace, $language);
     }
 }

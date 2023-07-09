@@ -29,14 +29,6 @@ class AdminLogic extends Logic
     {
         $jwt = make(JWTHelper::class);
 
-        if (
-            empty($authorization)
-            || ! preg_match('/Bearer\\s(\\S+)/', $authorization, $matches)
-        ) {
-            throw new JWTException(t('jwt.not_token'));
-        }
-
-        $authorization = $matches[1];
         $token = $jwt->checkToken($authorization);
         if ($token === false) {
             throw new TokenValidException(t('jwt.token_valid'));

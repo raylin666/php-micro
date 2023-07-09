@@ -32,16 +32,16 @@ class AdminService extends Service
     public function onOpen(Server $server, Request $request): void
     {
         // 验证 TOKEN
-        $authorization = $request->header['authorization'] ?? '';
+        $authorization = $request->get['token'] ?? '';
         try {
-            $verifyResult = $this->adminLogic->JWTMiddleware($authorization);
+            $this->adminLogic->JWTMiddleware($authorization);
         } catch (Exception $e) {
             $server->push($request->fd, json_encode(['code' => $e->getCode(), 'message' => $e->getMessage()]));
             $server->close($request->fd);
             return;
         }
 
-        $server->push($request->fd, json_encode(['messageType' => 'notice', 'data' => ['type' => 'success', 'text' => '连接 WebSocket 服务成功']]));
+        // $server->push($request->fd, json_encode(['messageType' => 'notice', 'data' => ['type' => 'success', 'text' => '连接 WebSocket 服务成功']]));
     }
 
     public function onClose(Response|Server $server, int $fd, int $reactorId): void

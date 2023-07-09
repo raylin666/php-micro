@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace Core\Traits;
 
-use App\Account\Model\Account;
+use App\Admin\Model\Account;
 use Core\Contract\AccountInterface;
 use Hyperf\Context\Context;
 
