@@ -80,3 +80,19 @@ CREATE TABLE `article_extend` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uqe_article` (`article_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文章扩展表';
+
+CREATE TABLE `chatbot_category_scene` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分类名称',
+  `pid` bigint NOT NULL DEFAULT '0' COMMENT '父级分类ID',
+  `icon` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'Icon 图标',
+  `describe` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '分类描述',
+  `question` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '提问格式, 二级类目才有, 替换格式类似为 %s% 用来在传递提问时的占位值',
+  `sort` smallint unsigned NOT NULL DEFAULT '0' COMMENT '分类排序',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '分类状态 0:已关闭 1:已开启',
+  `created_at` timestamp NOT NULL COMMENT '创建时间',
+  `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_name_pid` (`name`,`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='聊天机器人提问场景类型分类';

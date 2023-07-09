@@ -11,13 +11,21 @@ declare(strict_types=1);
  */
 namespace App\Websocket\Controller;
 
+use App\Websocket\Service\AdminService;
 use Hyperf\Contract\OnCloseInterface;
 use Hyperf\Contract\OnMessageInterface;
 use Hyperf\Contract\OnOpenInterface;
+use Hyperf\Di\Annotation\Inject;
 use Hyperf\WebSocketServer\Constant\Opcode;
 
 class AdminController implements OnMessageInterface, OnOpenInterface, OnCloseInterface
 {
+    #[Inject]
+    protected AdminService $adminService;
+
+    /**
+     * 接收消息.
+     */
     public function onMessage($server, $frame): void
     {
         // TODO: Implement onMessage() method.
@@ -29,20 +37,26 @@ class AdminController implements OnMessageInterface, OnOpenInterface, OnCloseInt
             return;
         }
 
-        $server->push($frame->fd, 'Recv: ' . $frame->data);
+        $this->adminService->onMessage($server, $frame);
     }
 
+    /**
+     * 打开连接.
+     */
     public function onOpen($server, $request): void
     {
         // TODO: Implement onOpen() method.
 
-        // $server->push($request->fd, json_encode(['messageType' => 'notice', 'data' => ['type' => 'success', 'text' => '连接 WebSocket 服务成功']]));
+        $this->adminService->onOpen($server, $request);
     }
 
+    /**
+     * 关闭连接.
+     */
     public function onClose($server, int $fd, int $reactorId): void
     {
         // TODO: Implement onClose() method.
 
-        // $server->push(json_encode(['messageType' => 'notice', 'data' => ['type' => 'error', 'text' => '已关闭 WebSocket 服务']]));
+        $this->adminService->onClose($server, $fd, $reactorId);
     }
 }

@@ -35,6 +35,11 @@ Router::addGroup('/admin', function () {
     Router::addGroup('/article', function () {
         include_once 'routes/admin/article.php';
     });
+
+    // 聊天机器人相关路由
+    Router::addGroup('/chatbot', function () {
+        include_once 'routes/admin/chatbot.php';
+    });
 });
 
 // 前台服务

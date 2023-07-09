@@ -11,10 +11,10 @@ declare(strict_types=1);
  */
 namespace App\Admin\Controller;
 
-use Exception;
 use App\Admin\Request\ArticleRequest;
 use App\Admin\Service\ArticleService;
 use Core\Constants\Page;
+use Exception;
 use Hyperf\Di\Annotation\Inject;
 use Psr\Http\Message\ResponseInterface;
 
@@ -25,8 +25,6 @@ class ArticleController extends Controller
 
     /**
      * 获取文章列表.
-     * @param ArticleRequest $request
-     * @return ResponseInterface
      */
     public function list(ArticleRequest $request): ResponseInterface
     {
@@ -38,8 +36,6 @@ class ArticleController extends Controller
 
     /**
      * 新增文章.
-     * @param ArticleRequest $request
-     * @return ResponseInterface
      */
     public function add(ArticleRequest $request): ResponseInterface
     {
@@ -50,7 +46,6 @@ class ArticleController extends Controller
     /**
      * 获取文章信息.
      * @param int $id 文章ID
-     * @return ResponseInterface
      */
     public function info(int $id): ResponseInterface
     {
@@ -59,9 +54,6 @@ class ArticleController extends Controller
 
     /**
      * 更新文章.
-     * @param ArticleRequest $request
-     * @param int            $id
-     * @return ResponseInterface
      */
     public function update(ArticleRequest $request, int $id): ResponseInterface
     {
@@ -71,9 +63,6 @@ class ArticleController extends Controller
 
     /**
      * 修改文章属性.
-     * @param int            $id
-     * @param string         $field
-     * @return ResponseInterface
      */
     public function updateField(int $id, string $field): ResponseInterface
     {
@@ -83,9 +72,6 @@ class ArticleController extends Controller
 
     /**
      * 删除文章.
-     * @param ArticleRequest $request
-     * @param int            $id
-     * @return ResponseInterface
      * @throws Exception
      */
     public function delete(ArticleRequest $request, int $id): ResponseInterface

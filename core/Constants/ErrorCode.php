@@ -72,6 +72,10 @@ class ErrorCode extends AbstractConstants
      * @Message("无效指令")
      */
     public const SYSTEM_INVALID_INSTRUCTION_ERROR = 200003;
+    /**
+     * @Message("请先删除分类下的关联子元素")
+     */
+    public const SYSTEM_EXISTS_RELATION_ERROR = 200004;
 
     /**
      * 账号相关错误状态码 01.

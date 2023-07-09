@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace Core\Middleware;
 
-use core\Constants\HttpErrorCode;
+use Core\Constants\HttpErrorCode;
 use Core\Decorator\ResponseDecorator;
 use Core\Helper\ApplicationHelper;
 use Hyperf\Codec\Json;
@@ -25,6 +25,11 @@ use function Hyperf\Support\make;
 
 class HttpCoreMiddleware extends CoreMiddleware
 {
+    public function getConfig(string $key, mixed $default = null)
+    {
+        return ApplicationHelper::getConfig()->get($key, $default);
+    }
+
     /**
      * 跨域
      */
@@ -48,8 +53,8 @@ class HttpCoreMiddleware extends CoreMiddleware
         $decorator = make(ResponseDecorator::class);
         $decorator->withCode($code);
         return $this->response()
-            ->withHeader('Server', ApplicationHelper::getConfig()->get('http.server'))
-            ->withAddedHeader('Content-Type', ApplicationHelper::getConfig()->get('http.content-type'))
+            ->withHeader('Server', $this->getConfig('http.server'))
+            ->withAddedHeader('Content-Type', $this->getConfig('http.content-type'))
             ->withStatus($code)
             ->withBody(new SwooleStream(Json::encode($decorator->toArray())));
     }
@@ -64,8 +69,8 @@ class HttpCoreMiddleware extends CoreMiddleware
         $decorator->withCode($code);
         $decorator->withMessage(HttpErrorCode::getMessage($code) . ', Allow: ' . implode(', ', $methods));
         return $this->response()
-            ->withHeader('Server', ApplicationHelper::getConfig()->get('http.server'))
-            ->withAddedHeader('Content-Type', ApplicationHelper::getConfig()->get('http.content-type'))
+            ->withHeader('Server', $this->getConfig('http.server'))
+            ->withAddedHeader('Content-Type', $this->getConfig('http.content-type'))
             ->withStatus($code)
             ->withBody(new SwooleStream(Json::encode($decorator->toArray())));
     }
@@ -78,11 +83,11 @@ class HttpCoreMiddleware extends CoreMiddleware
     {
         $response = Context::get(ResponseInterface::class);
         $response = $response
-            ->withHeader('Server', ApplicationHelper::getConfig()->get('http.server'))
-            ->withHeader('Access-Control-Allow-Origin', ApplicationHelper::getConfig()->get('http.allow-origin'))
-            ->withHeader('Access-Control-Allow-Methods', ApplicationHelper::getConfig()->get('http.allow-method'))
-            ->withHeader('Access-Control-Allow-Credentials', ApplicationHelper::getConfig()->get('http.allow-credentials'))
-            ->withHeader('Access-Control-Allow-Headers', ApplicationHelper::getConfig()->get('http.allow-headers'));
+            ->withHeader('Server', $this->getConfig('http.server'))
+            ->withHeader('Access-Control-Allow-Origin', $this->getConfig('http.allow-origin'))
+            ->withHeader('Access-Control-Allow-Methods', $this->getConfig('http.allow-method'))
+            ->withHeader('Access-Control-Allow-Credentials', $this->getConfig('http.allow-credentials'))
+            ->withHeader('Access-Control-Allow-Headers', $this->getConfig('http.allow-headers'));
 
         Context::set(ResponseInterface::class, $response);
         return $response;
