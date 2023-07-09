@@ -25,8 +25,7 @@ class ChatBotService extends Service
      */
     public function list(): array
     {
-        $list = $this->chatBotLogic->list();
-        return $list->toArray();
+        return $this->chatBotLogic->list();
     }
 
     /**

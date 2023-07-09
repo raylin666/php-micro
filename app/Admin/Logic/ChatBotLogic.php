@@ -13,8 +13,8 @@ namespace App\Admin\Logic;
 
 use App\Admin\Model\ChatbotCategoryScene;
 use Core\Constants\ErrorCode;
+use Core\Helper\TreeHelper;
 use Exception;
-use Hyperf\Database\Model\Collection;
 
 use function Hyperf\Support\make;
 
@@ -23,14 +23,10 @@ class ChatBotLogic extends Logic
     /**
      * 获取场景分类列表.
      */
-    public function list(): Collection
+    public function list(): array
     {
-        $list = ChatbotCategoryScene::getParentList();
-
-        foreach ($list as &$item) {
-        }
-
-        return $list;
+        $list = ChatbotCategoryScene::getList();
+        return TreeHelper::buildCategory($list->toArray());
     }
 
     /**

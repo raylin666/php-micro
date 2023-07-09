@@ -13,6 +13,7 @@ namespace App\Admin\Model;
 
 use Hyperf\Database\Model\Collection as ModelCollection;
 use Hyperf\Database\Model\SoftDeletes;
+use Hyperf\Collection\Collection;
 
 /**
  * @property int $id 主键
@@ -53,6 +54,11 @@ class ChatbotCategoryScene extends Model
     public static function getParentList(): ModelCollection
     {
         return self::where('pid', 0)->get();
+    }
+
+    public static function getList(): Collection
+    {
+        return self::orderBy('pid')->orderByDesc('sort')->get();
     }
 
     public static function getInfoById(int $id)
