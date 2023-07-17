@@ -32,6 +32,15 @@ class ArticleCategoryController extends Controller
     }
 
     /**
+     * 获取分类选择列表.
+     * @return ResponseInterface
+     */
+    public function listSelect(): ResponseInterface
+    {
+        return $this->response->json($this->articleCategoryService->listSelect());
+    }
+
+    /**
      * 新增分类.
      * @param ArticleCategoryRequest $request
      * @return ResponseInterface

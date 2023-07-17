@@ -32,6 +32,8 @@ Router::delete('/delete/{id}', [ArticleController::class, 'delete'], ['middlewar
 Router::addGroup('/category', function () {
     // 获取分类列表
     Router::get('/list', [ArticleCategoryController::class, 'list'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
+    // 获取分类选择列表 (比如新增文章时)
+    Router::get('/list/select', [ArticleCategoryController::class, 'listSelect'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
     // 新增分类
     Router::post('/add', [ArticleCategoryController::class, 'add'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
     // 获取分类信息

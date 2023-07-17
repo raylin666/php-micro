@@ -40,6 +40,14 @@ class ArticleCategoryLogic extends Logic
     }
 
     /**
+     * 获取分类选择列表.
+     */
+    public function listSelect(): Collection
+    {
+        return ArticleCategory::getParentList();
+    }
+
+    /**
      * 新增分类.
      * @param array $data 数据内容
      */

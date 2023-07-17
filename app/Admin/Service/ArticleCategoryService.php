@@ -26,7 +26,16 @@ class ArticleCategoryService extends Service
     public function list(): array
     {
         $list = $this->articleCategoryLogic->list();
-        return $list->toArray();
+        return ['list' => $list->toArray()];
+    }
+
+    /**
+     * 获取分类选择列表.
+     */
+    public function listSelect(): array
+    {
+        $list = $this->articleCategoryLogic->listSelect();
+        return ['list' => $list->toArray()];
     }
 
     /**

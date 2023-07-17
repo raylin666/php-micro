@@ -52,7 +52,7 @@ class ArticleCategory extends Model
      */
     public static function getParentList(): ModelCollection
     {
-        return self::where('pid', 0)->get();
+        return self::where('pid', 0)->orderByDesc('sort')->get();
     }
 
     public static function getInfoById(int $id)
