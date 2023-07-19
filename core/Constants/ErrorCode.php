@@ -73,9 +73,9 @@ class ErrorCode extends AbstractConstants
      */
     public const SYSTEM_INVALID_INSTRUCTION_ERROR = 200003;
     /**
-     * @Message("请先删除分类下的关联子元素")
+     * @Message("无效资源流")
      */
-    public const SYSTEM_EXISTS_RELATION_ERROR = 200004;
+    public const SYSTEM_INVALID_RESOURCE_ERROR = 200004;
 
     /**
      * 账号相关错误状态码 01.
@@ -108,4 +108,12 @@ class ErrorCode extends AbstractConstants
      * @Message("账号已在其他区域登录, 请重新登录")
      */
     public const ACCOUNT_LOGIN_OTHER_REGION_ERROR = 201005;
+
+    /**
+     * 文章相关错误状态码 02.
+     */
+    /**
+     * @Message("请先删除分类下的关联子元素")
+     */
+    public const SYSTEM_EXISTS_RELATION_ERROR = 202001;
 }

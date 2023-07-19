@@ -21,7 +21,7 @@ class CreateArticleExtendTable extends Migration
             $table->longText('content')->comment('文章正文');
             $table->string('keyword')->default('')->comment('文章关键词');
             $table->text('attachment_path')->comment('文章附件路径')->nullable();
-            $table->unique('article_id', 'uqe_article');
+            $table->unique('article_id', 'uk_article');
         });
     }
 

@@ -15,7 +15,7 @@ use Core\Contract\ModuleInfoInterface;
 use Core\Decorator\ModelDataDecorator;
 use Core\Decorator\ModelOptionDecorator;
 use Core\Helper\ApplicationHelper;
-use Core\Helper\ModelUpdateVisitorHelper;
+use Core\Repositories\Model\ModelUpdateVisitor;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Database\Commands\Ast\GenerateModelIDEVisitor;
 use Hyperf\Database\Commands\Ast\ModelRewriteConnectionVisitor;
@@ -32,7 +32,6 @@ use PhpParser\ParserFactory;
 use PhpParser\PrettyPrinter\Standard;
 use PhpParser\PrettyPrinterAbstract;
 use RuntimeException;
-
 use function Hyperf\Support\make;
 
 class ModelGenerator extends Generator
@@ -172,7 +171,7 @@ class ModelGenerator extends Generator
         $columns = $this->getModelColumns($namespace, $columns, $modelOptionDecorator->isForceCasts());
 
         $traverser = new NodeTraverser();
-        $traverser->addVisitor(make(ModelUpdateVisitorHelper::class, [
+        $traverser->addVisitor(make(ModelUpdateVisitor::class, [
             'class' => $namespace,
             'columns' => $columns,
             'option' => $modelOptionDecorator,

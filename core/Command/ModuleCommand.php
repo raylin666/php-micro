@@ -16,7 +16,7 @@ use Core\Constants\Constant;
 use Core\Decorator\ModuleInfoDecorator;
 use Core\Generator\ModuleGenerator;
 use Core\GeneratorCommand;
-use Core\Helper\ConsoleTableHelper;
+use Core\Repositories\Cli\ConsoleTable;
 use Hyperf\Command\Annotation\Command;
 use Symfony\Component\Console\Input\InputOption;
 use function Hyperf\Support\make;
@@ -44,7 +44,7 @@ class ModuleCommand extends GeneratorCommand
         // 获取业务模块列表
         if ($this->getNameInput() == 'LIST') {
             $modules = $this->Module()->list();
-            $table = new ConsoleTableHelper();
+            $table = new ConsoleTable();
             $table->setHeader(['Name', 'Label', 'Description', 'Version', 'Install', 'Enable']);
             foreach ($modules as $mod) {
                 $table->addRow([

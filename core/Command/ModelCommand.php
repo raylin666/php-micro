@@ -16,14 +16,13 @@ use Core\Constants\Constant;
 use Core\Decorator\ModelOptionDecorator;
 use Core\Generator\ModelGenerator;
 use Core\Helper\ApplicationHelper;
-use Core\Helper\ConsoleTableHelper;
+use Core\Repositories\Cli\ConsoleTable;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Contract\ConfigInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use function Hyperf\Support\make;
 
 #[Command]
@@ -113,7 +112,7 @@ class ModelCommand extends BaseCommand
             }
         }
 
-        $consoleTable = new ConsoleTableHelper();
+        $consoleTable = new ConsoleTable();
         $consoleTable->setHeader(['Table', 'Model', 'Module', 'Pool', 'Success', 'Msg']);
 
         $result = [];

@@ -15,7 +15,7 @@ use App\Admin\Model\Account;
 use Core\Constants\ErrorCode;
 use Core\Exception\JWTException;
 use Core\Exception\TokenValidException;
-use Core\Helper\JWTHelper;
+use Core\Repositories\Auth\JWT;
 use Core\Traits\AccountTrait;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -32,12 +32,12 @@ class HttpJwtMiddleware implements MiddlewareInterface
 
     protected HttpResponse $response;
 
-    protected JWTHelper $jwt;
+    protected JWT $jwt;
 
     public function __construct(HttpResponse $response)
     {
         $this->response = $response;
-        $this->jwt = make(JWTHelper::class);
+        $this->jwt = make(JWT::class);
     }
 
     /**

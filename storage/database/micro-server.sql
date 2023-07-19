@@ -57,7 +57,7 @@ CREATE TABLE `article_category` (
     `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
     `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uqe_name` (`name`),
+    UNIQUE KEY `uk_name` (`name`),
     KEY `idx_pid` (`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文章分类表';
 
@@ -78,7 +78,7 @@ CREATE TABLE `article_extend` (
   `keyword` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文章关键词',
   `attachment_path` text COLLATE utf8mb4_unicode_ci COMMENT '文章附件路径',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uqe_article` (`article_id`)
+  UNIQUE KEY `uk_article` (`article_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文章扩展表';
 
 CREATE TABLE `chatbot_category_scene` (
@@ -96,3 +96,24 @@ CREATE TABLE `chatbot_category_scene` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_name_pid` (`name`,`pid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='聊天机器人提问场景类型分类';
+
+CREATE TABLE `upload_media` (
+    `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '资源唯一哈希值',
+    `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件名称',
+    `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件存储路径',
+    `mime_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件类型',
+    `size` int unsigned NOT NULL DEFAULT '0' COMMENT '文件存储大小',
+    `url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '文件链接',
+    `ext` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '文件后缀',
+    `extra` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '扩展内容, JSON 格式存储',
+    `third_party_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '第三方平台文件资源唯一哈希值',
+    `third_party_uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '第三方平台文件资源 UUID',
+    `third_party` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'local' COMMENT '上传平台 local(本地) | qiniu(七牛云)',
+    `bucket` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '第三方平台文件资源存储仓库',
+    `created_at` timestamp NOT NULL COMMENT '创建时间',
+    `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
+    `deleted_at` timestamp NULL DEFAULT NULL COMMENT '删除时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_hash_third` (`hash`,`third_party`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='媒体资源上传';

@@ -1,7 +1,7 @@
 {
     "name": "Admin",
     "label": "",
-    "description": "",
+    "description": "后台系统服务",
     "installed": true,
     "enabled": true,
     "version": "1.0.0"

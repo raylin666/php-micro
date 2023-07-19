@@ -9,9 +9,9 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace Core\Helper;
+namespace Core\Repositories\Cli;
 
-class ConsoleTableHelper
+class ConsoleTable
 {
     public const ALIGN_LEFT = 1;
 

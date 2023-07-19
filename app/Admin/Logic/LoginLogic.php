@@ -15,7 +15,7 @@ use App\Admin\Model\Account;
 use Carbon\Carbon;
 use Core\Constants\Enum;
 use Core\Constants\ErrorCode;
-use Core\Helper\JWTHelper;
+use Core\Repositories\Auth\JWT;
 use Core\Helper\RequestHelper;
 
 use function Hyperf\Support\make;
@@ -46,7 +46,7 @@ class LoginLogic extends Logic
 
         // 更新登录信息
         $now = Carbon::now();
-        $token = make(JWTHelper::class)->getToken($account->getAttributeValue('id'));
+        $token = make(JWT::class)->getToken($account->getAttributeValue('id'));
         $account->setAttribute('current_login_token', $token);
         $account->setAttribute('last_login_ip', RequestHelper::getClientIP());
         $account->setAttribute('last_login_at', $now);

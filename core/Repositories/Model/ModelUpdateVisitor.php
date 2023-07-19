@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace Core\Helper;
+namespace Core\Repositories\Model;
 
 use Core\Decorator\ModelOptionDecorator;
 use Hyperf\CodeParser\PhpDocReader;
@@ -39,7 +39,7 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use RuntimeException;
 
-class ModelUpdateVisitorHelper extends NodeVisitorAbstract
+class ModelUpdateVisitor extends NodeVisitorAbstract
 {
     public const RELATION_METHODS = [
         'hasMany' => HasMany::class,

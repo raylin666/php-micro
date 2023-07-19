@@ -23,6 +23,7 @@
         "hyperf/database": "~3.0.0",
         "hyperf/db-connection": "~3.0.0",
         "hyperf/elasticsearch": "~3.0.0",
+        "hyperf/filesystem": "^3.0",
         "hyperf/framework": "~3.0.0",
         "hyperf/guzzle": "~3.0.0",
         "hyperf/http-server": "~3.0.0",
@@ -34,7 +35,9 @@
         "hyperf/redis": "~3.0.0",
         "hyperf/validation": "^3.0",
         "hyperf/websocket-server": "^3.0",
-        "lcobucci/jwt": "^4.3"
+        "lcobucci/jwt": "^4.3",
+        "overtrue/flysystem-qiniu": "^3.0",
+        "ramsey/uuid": "^4.7"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",

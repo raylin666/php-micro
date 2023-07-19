@@ -1,7 +1,7 @@
 {
     "name": "Websocket",
     "label": "",
-    "description": "",
+    "description": "前后台即时通讯服务",
     "installed": true,
     "enabled": true,
     "version": "1.0.0"

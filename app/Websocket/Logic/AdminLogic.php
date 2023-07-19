@@ -13,9 +13,8 @@ namespace App\Websocket\Logic;
 
 use App\Admin\Model\Account;
 use Core\Constants\ErrorCode;
-use Core\Exception\JWTException;
 use Core\Exception\TokenValidException;
-use Core\Helper\JWTHelper;
+use Core\Repositories\Auth\JWT;
 use function Hyperf\Support\make;
 
 class AdminLogic extends Logic
@@ -27,7 +26,7 @@ class AdminLogic extends Logic
      */
     public function JWTMiddleware(string $authorization): array
     {
-        $jwt = make(JWTHelper::class);
+        $jwt = make(JWT::class);
 
         $token = $jwt->checkToken($authorization);
         if ($token === false) {

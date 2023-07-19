@@ -9,11 +9,12 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace Core\Helper;
+namespace Core\Repositories\Auth;
 
 use core\Constants\ErrorCode;
 use Core\Exception\ErrorException;
 use Core\Exception\JWTException;
+use Core\Helper\ApplicationHelper;
 use DateTimeImmutable;
 use Exception;
 use Hyperf\Contract\ConfigInterface;
@@ -24,7 +25,7 @@ use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Token;
 
-class JWTHelper
+class JWT
 {
     protected Encoder $encoder;
 

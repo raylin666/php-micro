@@ -24,7 +24,7 @@ class CreateArticleCategoryTable extends Migration
             $table->timestamp('created_at')->comment('创建时间');
             $table->timestamp('updated_at')->comment('更新时间')->nullable();
             $table->timestamp('deleted_at')->comment('删除时间')->nullable();
-            $table->unique('name', 'uqe_name');
+            $table->unique('name', 'uk_name');
             $table->index('pid', 'idx_pid');
         });
     }
