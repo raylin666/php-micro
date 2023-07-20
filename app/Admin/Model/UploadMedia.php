@@ -13,14 +13,16 @@ namespace App\Admin\Model;
 
 
 
+use Hyperf\Database\Model\SoftDeletes;
+
 /**
  * @property int $id 主键
  * @property string $hash 资源唯一哈希值
  * @property string $name 文件名称
+ * @property string $domain 文件域名
  * @property string $key 文件存储路径
  * @property string $mime_type 文件类型
  * @property int $size 文件存储大小
- * @property string $url 文件链接
  * @property string $ext 文件后缀
  * @property string $extra 扩展内容, JSON 格式存储
  * @property string $third_party_hash 第三方平台文件资源唯一哈希值
@@ -33,6 +35,8 @@ namespace App\Admin\Model;
  */
 class UploadMedia extends Model
 {
+    use SoftDeletes;
+
     /**
      * The table associated with the model.
      */
@@ -41,10 +45,25 @@ class UploadMedia extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'hash', 'name', 'key', 'mime_type', 'size', 'url', 'ext', 'extra', 'third_party_hash', 'third_party_uuid', 'third_party', 'bucket', 'created_at', 'updated_at', 'deleted_at'];
+    protected array $fillable = ['id', 'hash', 'name', 'domain', 'key', 'mime_type', 'size', 'ext', 'extra', 'third_party_hash', 'third_party_uuid', 'third_party', 'bucket', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be cast to native types.
      */
     protected array $casts = ['id' => 'integer', 'size' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    /**
+     * @param string $domain
+     * @param string $location
+     * @return string
+     */
+    public static function getUrl(string $domain, string $location): string
+    {
+        return $domain . '/' . $location;
+    }
+
+    public static function getFirstByHashThirdParty(string $hash, string $thirdParty)
+    {
+        return self::withTrashed()->where(['hash' => $hash, 'third_party' => $thirdParty])->first();
+    }
 }

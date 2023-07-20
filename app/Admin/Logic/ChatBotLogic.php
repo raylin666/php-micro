@@ -173,7 +173,7 @@ class ChatBotLogic extends Logic
     {
         // 只能删除无子分类的数据, 否则请先删除子分类
         if (ChatbotCategoryScene::hasChildById($id)) {
-            error(ErrorCode::SYSTEM_EXISTS_RELATION_ERROR);
+            error(ErrorCode::ARTICLE_CATEGORY_EXISTS_RELATION_ERROR);
         }
 
         // 物理删除

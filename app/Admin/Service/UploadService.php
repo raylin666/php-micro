@@ -21,9 +21,12 @@ class UploadService extends Service
 
     /**
      * 文件资源流上传.
+     * @param string $dataStream 资源流
+     * @param string $extension 文件扩展名
+     * @return array
      */
-    public function fileStream(string $dataStream): array
+    public function fileStream(string $dataStream, string $extension): array
     {
-        return $this->uploadLogic->fileStream($dataStream);
+        return $this->uploadLogic->fileStream($dataStream, $extension);
     }
 }

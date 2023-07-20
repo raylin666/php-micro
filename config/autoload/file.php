@@ -9,13 +9,14 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+use Core\Repositories\Filesystem\Qiniu\Factory as QiniuAdapterFactory;
 use Hyperf\Filesystem\Adapter\AliyunOssAdapterFactory;
 use Hyperf\Filesystem\Adapter\CosAdapterFactory;
 use Hyperf\Filesystem\Adapter\FtpAdapterFactory;
 use Hyperf\Filesystem\Adapter\LocalAdapterFactory;
 use Hyperf\Filesystem\Adapter\MemoryAdapterFactory;
-use Hyperf\Filesystem\Adapter\QiniuAdapterFactory;
 use Hyperf\Filesystem\Adapter\S3AdapterFactory;
+
 use function Hyperf\Support\env;
 
 return [

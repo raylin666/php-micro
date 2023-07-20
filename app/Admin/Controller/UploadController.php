@@ -30,6 +30,7 @@ class UploadController extends Controller
     {
         $data = $request->validated();
         $dataStream = strval($data['stream'] ?? '');
-        return $this->response->json($this->uploadService->fileStream($dataStream));
+        $extension = strval($request->post('extension', ''));
+        return $this->response->json($this->uploadService->fileStream($dataStream, $extension));
     }
 }

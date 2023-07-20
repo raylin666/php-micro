@@ -17,10 +17,10 @@ class CreateUploadMediaTable extends Migration
             $table->bigIncrements('id')->comment('主键');
             $table->string('hash', 32)->comment('资源唯一哈希值');
             $table->string('name', 100)->comment('文件名称');
+            $table->string('domain', 32)->comment('文件域名');
             $table->string('key', 255)->default('')->comment('文件存储路径');
             $table->string('mime_type', 32)->comment('文件类型');
             $table->integer('size', false, true)->default(0)->comment('文件存储大小');
-            $table->string('url', 255)->comment('文件链接');
             $table->string('ext', 10)->default('')->comment('文件后缀');
             $table->string('extra', 500)->default('')->comment('扩展内容, JSON 格式存储');
             $table->string('third_party_hash', 255)->default('')->comment('第三方平台文件资源唯一哈希值');

@@ -115,5 +115,17 @@ class ErrorCode extends AbstractConstants
     /**
      * @Message("请先删除分类下的关联子元素")
      */
-    public const SYSTEM_EXISTS_RELATION_ERROR = 202001;
+    public const ARTICLE_CATEGORY_EXISTS_RELATION_ERROR = 202001;
+
+    /**
+     * 媒体上传相关错误状态码 03.
+     */
+    /**
+     * @Message("文件上传失败")
+     */
+    public const FILE_UPLOAD_ERROR = 203001;
+    /**
+     * @Message("数据资源已存在(但已被软删), 请联系管理员处理")
+     */
+    public const FILE_STREAM_RESOURCE_ALREADY_EXISTS_ERROR = 203002;
 }
