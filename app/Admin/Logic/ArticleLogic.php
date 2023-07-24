@@ -12,9 +12,12 @@ declare(strict_types=1);
 namespace App\Admin\Logic;
 
 use App\Admin\Model\Article;
+use App\Admin\Model\ArticleCategory;
+use App\Admin\Model\ArticleCategoryRelation;
 use App\Admin\Model\ArticleExtend;
 use Carbon\Carbon;
-use core\Constants\ErrorCode;
+use Core\Constants\Enum;
+use Core\Constants\ErrorCode;
 use Core\Exception\BusinessException;
 use Exception;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
@@ -64,7 +67,23 @@ class ArticleLogic extends Logic
             || empty($cover)
             || empty($userId)
             || empty($content)
-            || empty($category)) {
+            || empty($category)
+            || (! is_array($category))) {
+            error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
+
+        $category = array_values(array_unique(array_filter($category)));
+        if (empty($category)) {
+            error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
+        // 获取正常的分类
+        foreach ($category as $key => $categoryItem) {
+            if (! ArticleCategory::hasInfoById(intval($categoryItem), Enum::STATUS_ON)) {
+                unset($category[$key]);
+            }
+        }
+        $category = array_values($category);
+        if (empty($category)) {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
 
@@ -85,6 +104,16 @@ class ArticleLogic extends Logic
             }
 
             $id = $article->getAttributeValue('id');
+            foreach ($category as $categoryId) {
+                if (ArticleCategoryRelation::hasInfo($id, $categoryId)) {
+                    continue;
+                }
+
+                ArticleCategoryRelation::insert([
+                    'article_id' => $id,
+                    'category_id' => $categoryId,
+                ]);
+            }
 
             $articleExtend = make(ArticleExtend::class);
             $articleExtend->setAttribute('article_id', $id);
@@ -149,6 +178,7 @@ class ArticleLogic extends Logic
             'source_url' => $result['source_url'],
             'content' => $result['content'],
             'keyword' => $result['keyword'],
+            'category' => $result['category'],
             'attachment_path' => $result['attachment_path'],
         ];
     }
@@ -176,7 +206,23 @@ class ArticleLogic extends Logic
             || empty($cover)
             || empty($userId)
             || empty($content)
-            || empty($category)) {
+            || empty($category)
+            || (! is_array($category))) {
+            error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
+
+        $category = array_values(array_unique(array_filter($category)));
+        if (empty($category)) {
+            error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
+        // 获取正常的分类
+        foreach ($category as $key => $categoryItem) {
+            if (! ArticleCategory::hasInfoById(intval($categoryItem), Enum::STATUS_ON)) {
+                unset($category[$key]);
+            }
+        }
+        $category = array_values($category);
+        if (empty($category)) {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
 
@@ -190,19 +236,31 @@ class ArticleLogic extends Logic
             $article->setAttribute('user_id', $userId);
             $article->setAttribute('updated_at', Carbon::now());
             (isset($data['sort']) && is_numeric($data['sort'])) && $article->setAttribute('sort', $data['sort']);
-            (isset($data['recommend_flag']) && is_numeric($data['recommend_flag'])) && $article->setAttribute('recommend_flag', $data['recommend_flag']);
-            (isset($data['commented_flag']) && is_numeric($data['commented_flag'])) && $article->setAttribute('commented_flag', $data['commented_flag']);
+            (isset($data['recommend_flag']) && is_bool($data['recommend_flag'])) && $article->setAttribute('recommend_flag', $data['recommend_flag']);
+            (isset($data['commented_flag']) && is_bool($data['commented_flag'])) && $article->setAttribute('commented_flag', $data['commented_flag']);
             (isset($data['status']) && is_numeric($data['status'])) && $article->setAttribute('status', $data['status']);
             if (! $article->save()) {
                 error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
+            }
+
+            // 判断分类是否相同
+            $categoryAll = ArticleCategoryRelation::getCategoryByArticleId($id);
+            if ($categoryAll->toArray() != $category) {
+                ArticleCategoryRelation::deleteByArticleId($id);
+                foreach ($category as $categoryId) {
+                    ArticleCategoryRelation::insert([
+                        'article_id' => $id,
+                        'category_id' => $categoryId,
+                    ]);
+                }
             }
 
             $articleExtend = ArticleExtend::getByArticleId($id);
             $articleExtend->setAttribute('content', $content);
             (isset($data['source']) && $data['source']) && $articleExtend->setAttribute('source', $data['source']);
             (isset($data['source_url']) && $data['source_url']) && $articleExtend->setAttribute('source_url', $data['source_url']);
-            (isset($data['keyword']) && $data['keyword']) && $articleExtend->setAttribute('keyword', $data['keyword']);
-            (isset($data['attachment_path']) && $data['attachment_path']) && $articleExtend->setAttribute('attachment_path', $data['attachment_path']);
+            (isset($data['keyword']) && is_array($data['keyword'])) && $articleExtend->setAttribute('keyword', $data['keyword']);
+            (isset($data['attachment_path']) && is_array($data['attachment_path'])) && $articleExtend->setAttribute('attachment_path', $data['attachment_path']);
             if (! $articleExtend->save()) {
                 error(ErrorCode::SYSTEM_UPDATE_DATA_ERROR);
             }
@@ -271,6 +329,7 @@ class ArticleLogic extends Logic
 
             if ($article->forceDelete()) {
                 ArticleExtend::deleteByArticleId($id);
+                ArticleCategoryRelation::deleteByArticleId($id);
             }
 
             return true;
@@ -283,6 +342,29 @@ class ArticleLogic extends Logic
         }
 
         $article->delete();
+        return true;
+    }
+
+    /**
+     * 批量删除文章.
+     * @param array $ids 文章ID集合
+     * @param bool $force 是否强制删除/物理删除
+     * @throws Exception
+     */
+    public function batchDelete(array $ids, bool $force): bool
+    {
+        // 物理删除
+        if ($force) {
+            if (Article::withTrashed()->whereIn('id', $ids)->forceDelete()) {
+                ArticleExtend::batchDeleteByArticleIds($ids);
+                ArticleCategoryRelation::batchDeleteByArticleIds($ids);
+            }
+
+            return true;
+        }
+
+        // 软删除
+        Article::whereIn('id', $ids)->delete();
         return true;
     }
 }

@@ -27,6 +27,8 @@ Router::put('/update/{id}', [ArticleController::class, 'update'], ['middleware' 
 Router::patch('/update/{id}/{field}', [ArticleController::class, 'updateField'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
 // 删除文章
 Router::delete('/delete/{id}', [ArticleController::class, 'delete'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
+// 批量删除文章
+Router::post('/batch_delete', [ArticleController::class, 'batchDelete'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
 
 // 分类模块
 Router::addGroup('/category', function () {

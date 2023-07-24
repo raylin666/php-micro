@@ -55,7 +55,7 @@ class ArticleCategoryLogic extends Logic
     {
         $name = $data['name'] ?? '';
         $pid = intval($data['pid'] ?? 0);
-        $icon = $data['icon'] ?? '';
+        $cover = $data['cover'] ?? '';
         $color = $data['color'] ?? '';
         $sort = intval($data['sort'] ?? 0);
         $status = intval($data['status'] ?? 0);
@@ -67,7 +67,7 @@ class ArticleCategoryLogic extends Logic
         $category = make(ArticleCategory::class);
         $category->setAttribute('name', $name);
         $category->setAttribute('pid', $pid);
-        $category->setAttribute('icon', $icon);
+        $category->setAttribute('cover', $cover);
         $category->setAttribute('color', $color);
         $category->setAttribute('sort', $sort);
         $category->setAttribute('status', $status);
@@ -99,7 +99,7 @@ class ArticleCategoryLogic extends Logic
             'id' => $id,
             'name' => $category['name'],
             'pid' => $category['pid'],
-            'icon' => $category['icon'],
+            'cover' => $category['cover'],
             'color' => $category['color'],
             'sort' => $category['sort'],
             'status' => $category['status'],
@@ -121,7 +121,7 @@ class ArticleCategoryLogic extends Logic
 
         $name = $data['name'] ?? '';
         $pid = intval($data['pid'] ?? 0);
-        $icon = $data['icon'] ?? '';
+        $cover = $data['cover'] ?? '';
         $color = $data['color'] ?? '';
         $sort = intval($data['sort'] ?? 0);
         $status = intval($data['status'] ?? 0);
@@ -133,7 +133,7 @@ class ArticleCategoryLogic extends Logic
         $category = ArticleCategory::find($id);
         $category->setAttribute('name', $name);
         $category->setAttribute('pid', $pid);
-        $category->setAttribute('icon', $icon);
+        $category->setAttribute('cover', $cover);
         $category->setAttribute('color', $color);
         $category->setAttribute('sort', $sort);
         $category->setAttribute('status', $status);

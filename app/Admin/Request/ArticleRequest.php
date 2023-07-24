@@ -86,6 +86,14 @@ class ArticleRequest extends Request
         ];
     }
 
+    public function batch_deleteRules(): array
+    {
+        return [
+            'ids' => 'required|array',
+            'force' => 'boolean',
+        ];
+    }
+
     /**
      * Get custom messages for validator errors.
      */

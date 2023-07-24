@@ -13,6 +13,8 @@ namespace App\Admin\Model;
 
 
 
+use Hyperf\Collection\Collection;
+
 /**
  * @property int $id 主键
  * @property int $article_id 文章ID
@@ -34,4 +36,24 @@ class ArticleCategoryRelation extends Model
      * The attributes that should be cast to native types.
      */
     protected array $casts = ['id' => 'integer', 'article_id' => 'integer', 'category_id' => 'integer'];
+
+    public static function hasInfo(int $articleId, int $categoryId): bool
+    {
+        return self::where(['article_id' => $articleId, 'category_id' => $categoryId])->exists();
+    }
+
+    public static function getCategoryByArticleId(int $articleId): Collection
+    {
+        return self::where('article_id', $articleId)->pluck('category_id');
+    }
+
+    public static function deleteByArticleId(int $articleId)
+    {
+        return self::where('article_id', $articleId)->delete();
+    }
+
+    public static function batchDeleteByArticleIds(array $articleIds): int
+    {
+        return self::whereIn('article_id', $articleIds)->delete();
+    }
 }

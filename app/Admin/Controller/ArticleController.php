@@ -79,4 +79,15 @@ class ArticleController extends Controller
         $data = $request->validated();
         return $this->response->json($this->articleService->delete($id, boolval($data['force'] ?? false)));
     }
+
+    /**
+     * 批量删除文章.
+     * @throws Exception
+     */
+    public function batchDelete(ArticleRequest $request): ResponseInterface
+    {
+        $data = $request->validated();
+        $ids = $data['ids'] ?? [];
+        return $this->response->json($this->articleService->batchDelete($ids, boolval($data['force'] ?? false)));
+    }
 }

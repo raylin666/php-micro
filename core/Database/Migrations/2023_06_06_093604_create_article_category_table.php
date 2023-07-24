@@ -17,7 +17,7 @@ class CreateArticleCategoryTable extends Migration
             $table->integerIncrements('id')->comment('主键');
             $table->integer('pid', false, true)->default(0)->comment('上级分类');
             $table->string('name', 12)->comment('分类名称');
-            $table->string('icon', 160)->default('')->comment('分类图标');
+            $table->string('cover', 160)->default('')->comment('分类封面');
             $table->string('color', 30)->default('')->comment('分类颜色');
             $table->smallInteger('sort', false, true)->default(0)->comment('分类排序');
             $table->tinyInteger('status', false, true)->default(0)->comment('分类状态 0:已关闭 1:已开启');

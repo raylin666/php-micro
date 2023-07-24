@@ -68,4 +68,9 @@ class ArticleExtend extends Model
     {
         return self::where('article_id', $articleId)->delete();
     }
+
+    public static function batchDeleteByArticleIds(array $articleIds): int
+    {
+        return self::whereIn('article_id', $articleIds)->delete();
+    }
 }

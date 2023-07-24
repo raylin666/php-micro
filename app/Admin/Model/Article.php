@@ -77,6 +77,8 @@ class Article extends Model
             );
         foreach ($result->items() as &$item) {
             $item['keyword'] = json_decode($item['keyword'], true);
+            $categoryIds = ArticleCategoryRelation::getCategoryByArticleId($item['id']);
+            $item['category'] = ArticleCategory::getCategoryByArticleIds($categoryIds->toArray(), ['id', 'name', 'color']);
         }
 
         return $result;
@@ -102,6 +104,8 @@ class Article extends Model
         $result = $result->toArray();
         $result['keyword'] = json_decode($result['keyword'], true);
         $result['attachment_path'] = json_decode($result['attachment_path'], true);
+        $categoryIds = ArticleCategoryRelation::getCategoryByArticleId($result['id']);
+        $result['category'] = ArticleCategory::getCategoryByArticleIds($categoryIds->toArray());
         return $result;
     }
 

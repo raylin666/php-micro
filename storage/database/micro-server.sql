@@ -49,7 +49,7 @@ CREATE TABLE `article_category` (
     `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
     `pid` int unsigned NOT NULL DEFAULT '0' COMMENT '上级分类',
     `name` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '分类名称',
-    `icon` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '分类图标',
+    `cover` varchar(160) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '分类封面',
     `color` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '分类颜色',
     `sort` smallint unsigned NOT NULL DEFAULT '0' COMMENT '分类排序',
     `status` tinyint unsigned NOT NULL DEFAULT '0' COMMENT '分类状态 0:已关闭 1:已开启',

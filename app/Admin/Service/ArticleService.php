@@ -89,4 +89,16 @@ class ArticleService extends Service
         $this->articleLogic->delete($id, $force);
         return ['id' => $id];
     }
+
+    /**
+     * 批量删除文章.
+     * @param array $ids 文章ID集合
+     * @param bool $force 是否强制删除/物理删除
+     * @throws Exception
+     */
+    public function batchDelete(array $ids, bool $force = false): array
+    {
+        $this->articleLogic->batchDelete($ids, $force);
+        return ['ids' => $ids];
+    }
 }

@@ -21,8 +21,9 @@ class TreeHelper
     public static function buildCategory(array $categories, int $parentId = 0): array
     {
         $branch = [];
-        foreach ($categories as $category) {
+        foreach ($categories as $key => $category) {
             if ($category['pid'] == $parentId) {
+                unset($categories[$key]);
                 $category['children'] = static::buildCategory($categories, $category['id']);
                 $branch[] = $category;
             }

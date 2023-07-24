@@ -11,15 +11,15 @@ declare(strict_types=1);
  */
 namespace App\Admin\Model;
 
+use Hyperf\Collection\Collection;
 use Hyperf\Database\Model\Collection as ModelCollection;
 use Hyperf\Database\Model\SoftDeletes;
-use Hyperf\Collection\Collection;
 
 /**
  * @property int $id 主键
  * @property int $pid 上级分类
  * @property string $name 分类名称
- * @property string $icon 分类图标
+ * @property string $cover 分类封面
  * @property string $color 分类颜色
  * @property int $sort 分类排序
  * @property int $status 分类状态 0:已关闭 1:已开启
@@ -39,7 +39,7 @@ class ArticleCategory extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'pid', 'name', 'icon', 'color', 'sort', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected array $fillable = ['id', 'pid', 'name', 'cover', 'color', 'sort', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be cast to native types.
@@ -48,7 +48,6 @@ class ArticleCategory extends Model
 
     /**
      * 获取父级列表.
-     * @return ModelCollection
      */
     public static function getParentList(): ModelCollection
     {
@@ -60,14 +59,24 @@ class ArticleCategory extends Model
         return self::withTrashed()->where('id', $id)->first();
     }
 
-    public static function hasInfoById(int $id): bool
+    public static function hasInfoById(int $id, $status = null): bool
     {
-        return self::where('id', $id)->exists();
+        $builder = self::where('id', $id);
+        if (! is_null($status)) {
+            $builder->where('status', $status);
+        }
+
+        return $builder->exists();
     }
 
     public static function hasChildById(int $id): bool
     {
         return self::where('pid', $id)->exists();
+    }
+
+    public static function getCategoryByArticleIds(array $ids, array $columns = ['*']): Collection
+    {
+        return self::whereIn('id', $ids)->select($columns)->get();
     }
 
     public static function getArticleCountById(int $id): int
