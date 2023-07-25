@@ -19,7 +19,7 @@ class CreateChatbotCategorySceneTable extends Migration
             $table->bigInteger('pid')->default(0)->comment('父级分类ID');
             $table->string('icon', 30)->default('')->comment('Icon 图标');
             $table->string('describe')->default('')->comment('分类描述');
-            $table->string('question')->default('')->comment('提问格式, 二级类目才有, 替换格式类似为 %s% 用来在传递提问时的占位值');
+            $table->string('question')->default('')->comment('提问格式, 二级类目才有效, 替换格式类似为 %s% 用来在传递提问时的占位值');
             $table->smallInteger('sort', false, true)->default(0)->comment('分类排序');
             $table->tinyInteger('status')->default(0)->comment('分类状态 0:已关闭 1:已开启');
             $table->timestamp('created_at')->comment('创建时间');

@@ -37,7 +37,6 @@ class ArticleCategoryRequest extends Request
             'name' => 'required|string|min:1|max:12|unique:article_category,name',
             'pid' => 'numeric|min:0',
             'cover' => 'url',
-            'color' => 'string|max:30',
             'sort' => 'numeric|min:0|max:65535',
             'status' => [Rule::in(['0', '1'])],
         ];
@@ -55,7 +54,6 @@ class ArticleCategoryRequest extends Request
             ],
             'pid' => 'numeric|min:0',
             'cover' => 'url',
-            'color' => 'string|max:30',
             'sort' => 'numeric|min:0|max:65535',
             'status' => [Rule::in(['0', '1'])],
         ];

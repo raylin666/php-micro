@@ -16,6 +16,7 @@ use Core\Constants\ErrorCode;
 use Core\Helper\TreeHelper;
 use Exception;
 
+use Hyperf\Collection\Collection;
 use function Hyperf\Support\make;
 
 class ChatBotLogic extends Logic
@@ -27,6 +28,14 @@ class ChatBotLogic extends Logic
     {
         $list = ChatbotCategoryScene::getList();
         return TreeHelper::buildCategory($list->toArray());
+    }
+
+    /**
+     * 获取分类选择列表.
+     */
+    public function listSelect(): Collection
+    {
+        return ChatbotCategoryScene::getParentList();
     }
 
     /**
@@ -45,6 +54,9 @@ class ChatBotLogic extends Logic
 
         if (empty($name)) {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
+        if ($pid && empty($question)) {
+            error(ErrorCode::CHATBOT_QUESTION_REQUIRED_ERROR);
         }
 
         $categoryScene = make(ChatbotCategoryScene::class);
@@ -89,6 +101,7 @@ class ChatBotLogic extends Logic
             'sort' => $categoryScene['sort'],
             'status' => $categoryScene['status'],
             'created_at' => $categoryScene['created_at'],
+            'updated_at' => $categoryScene['updated_at'],
         ];
     }
 
@@ -113,6 +126,9 @@ class ChatBotLogic extends Logic
 
         if (empty($name)) {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
+        }
+        if ($pid && empty($question)) {
+            error(ErrorCode::CHATBOT_QUESTION_REQUIRED_ERROR);
         }
 
         $categoryScene = ChatbotCategoryScene::find($id);

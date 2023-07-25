@@ -128,4 +128,12 @@ class ErrorCode extends AbstractConstants
      * @Message("数据资源已存在(但已被软删), 请联系管理员处理")
      */
     public const FILE_STREAM_RESOURCE_ALREADY_EXISTS_ERROR = 203002;
+
+    /**
+     * 场景分类相关错误状态码 04.
+     */
+    /**
+     * @Message("二级场景分类下, 提问格式必填")
+     */
+    public const CHATBOT_QUESTION_REQUIRED_ERROR = 204001;
 }

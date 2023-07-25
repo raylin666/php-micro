@@ -78,7 +78,7 @@ class Article extends Model
         foreach ($result->items() as &$item) {
             $item['keyword'] = json_decode($item['keyword'], true);
             $categoryIds = ArticleCategoryRelation::getCategoryByArticleId($item['id']);
-            $item['category'] = ArticleCategory::getCategoryByArticleIds($categoryIds->toArray(), ['id', 'name', 'color']);
+            $item['category'] = ArticleCategory::getCategoryByArticleIds($categoryIds->toArray(), ['id', 'name']);
         }
 
         return $result;

@@ -44,7 +44,9 @@ class ChatBotRequest extends Request
                 }),
             ],
             'pid' => 'numeric|min:0',
-            'icon' => 'url',
+            'icon' => 'string',
+            'describe' => 'string',
+            'question' => 'string',
             'sort' => 'numeric|min:0|max:65535',
             'status' => [Rule::in(['0', '1'])],
         ];
@@ -63,7 +65,9 @@ class ChatBotRequest extends Request
                 }),
             ],
             'pid' => 'numeric|min:0',
-            'icon' => 'url',
+            'icon' => 'string',
+            'describe' => 'string',
+            'question' => 'string',
             'sort' => 'numeric|min:0|max:65535',
             'status' => [Rule::in(['0', '1'])],
         ];

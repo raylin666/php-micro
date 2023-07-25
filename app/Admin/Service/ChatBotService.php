@@ -30,6 +30,15 @@ class ChatBotService extends Service
     }
 
     /**
+     * 获取场景分类选择列表.
+     */
+    public function listSelect(): array
+    {
+        $list = $this->chatBotLogic->listSelect();
+        return ['list' => $list->toArray()];
+    }
+
+    /**
      * 新增场景分类.
      * @param array $data 数据集合
      */

@@ -30,6 +30,15 @@ class ChatBotController extends Controller
     }
 
     /**
+     * 获取场景分类选择列表.
+     * @return ResponseInterface
+     */
+    public function listSelect(): ResponseInterface
+    {
+        return $this->response->json($this->chatBotService->listSelect());
+    }
+
+    /**
      * 新增场景分类.
      */
     public function add(ChatBotRequest $request): ResponseInterface

@@ -16,6 +16,8 @@ use Hyperf\Validation\Middleware\ValidationMiddleware;
 
 // 获取场景分类列表
 Router::get('/list', [ChatBotController::class, 'list'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
+// 获取场景分类选择列表 (比如新增分类时)
+Router::get('/list/select', [ChatBotController::class, 'listSelect'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
 // 新增场景分类
 Router::post('/add', [ChatBotController::class, 'add'], ['middleware' => [HttpJwtMiddleware::class, ValidationMiddleware::class]]);
 // 获取场景分类信息
