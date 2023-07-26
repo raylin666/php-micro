@@ -56,6 +56,7 @@ class ArticleCategoryLogic extends Logic
         $name = $data['name'] ?? '';
         $pid = intval($data['pid'] ?? 0);
         $cover = $data['cover'] ?? '';
+        $color = $data['color'] ?? '';
         $sort = intval($data['sort'] ?? 0);
         $status = intval($data['status'] ?? 0);
 
@@ -67,6 +68,7 @@ class ArticleCategoryLogic extends Logic
         $category->setAttribute('name', $name);
         $category->setAttribute('pid', $pid);
         $category->setAttribute('cover', $cover);
+        $category->setAttribute('color', $color);
         $category->setAttribute('sort', $sort);
         $category->setAttribute('status', $status);
         if (! $category->save()) {
@@ -98,6 +100,7 @@ class ArticleCategoryLogic extends Logic
             'name' => $category['name'],
             'pid' => $category['pid'],
             'cover' => $category['cover'],
+            'color' => $category['color'],
             'sort' => $category['sort'],
             'status' => $category['status'],
             'created_at' => $category['created_at'],
@@ -119,6 +122,7 @@ class ArticleCategoryLogic extends Logic
         $name = $data['name'] ?? '';
         $pid = intval($data['pid'] ?? 0);
         $cover = $data['cover'] ?? '';
+        $color = $data['color'] ?? '';
         $sort = intval($data['sort'] ?? 0);
         $status = intval($data['status'] ?? 0);
 
@@ -130,6 +134,7 @@ class ArticleCategoryLogic extends Logic
         $category->setAttribute('name', $name);
         $category->setAttribute('pid', $pid);
         $category->setAttribute('cover', $cover);
+        $category->setAttribute('color', $color);
         $category->setAttribute('sort', $sort);
         $category->setAttribute('status', $status);
         if (! $category->save()) {
@@ -183,6 +188,10 @@ class ArticleCategoryLogic extends Logic
         // 只能删除无子分类的数据, 否则请先删除子分类
         if (ArticleCategory::hasChildById($id)) {
             error(ErrorCode::ARTICLE_CATEGORY_EXISTS_RELATION_ERROR);
+        }
+        // 判断分类下是否有文章, 有则必须先移除后才能删除
+        if (ArticleCategory::getArticleCountById($id) > 0) {
+            error(ErrorCode::ARTICLE_CATEGORY_HAS_ARTICLE_ERROR);
         }
 
         // 物理删除

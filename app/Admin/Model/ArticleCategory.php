@@ -20,6 +20,7 @@ use Hyperf\Database\Model\SoftDeletes;
  * @property int $pid 上级分类
  * @property string $name 分类名称
  * @property string $cover 分类封面
+ * @property string $color 分类颜色
  * @property int $sort 分类排序
  * @property int $status 分类状态 0:已关闭 1:已开启
  * @property \Carbon\Carbon $created_at 创建时间
@@ -38,7 +39,7 @@ class ArticleCategory extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = ['id', 'pid', 'name', 'cover', 'sort', 'status', 'created_at', 'updated_at', 'deleted_at'];
+    protected array $fillable = ['id', 'pid', 'name', 'cover', 'color', 'sort', 'status', 'created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be cast to native types.

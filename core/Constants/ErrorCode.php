@@ -116,6 +116,10 @@ class ErrorCode extends AbstractConstants
      * @Message("请先删除分类下的关联子元素")
      */
     public const ARTICLE_CATEGORY_EXISTS_RELATION_ERROR = 202001;
+    /**
+     * @Message("请先删除分类下的关联文章")
+     */
+    public const ARTICLE_CATEGORY_HAS_ARTICLE_ERROR = 202002;
 
     /**
      * 媒体上传相关错误状态码 03.
