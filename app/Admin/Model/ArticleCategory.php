@@ -49,9 +49,14 @@ class ArticleCategory extends Model
     /**
      * 获取父级列表.
      */
-    public static function getParentList(): ModelCollection
+    public static function getParentList($status = null): ModelCollection
     {
-        return self::where('pid', 0)->orderByDesc('sort')->get();
+        $builder = self::where('pid', 0);
+        if ($status) {
+            $builder->where('status', $status);
+        }
+
+        return $builder->orderByDesc('sort')->get();
     }
 
     public static function getInfoById(int $id)

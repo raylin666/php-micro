@@ -76,9 +76,9 @@ class ArticleLogic extends Logic
         if (empty($category)) {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
-        // 获取正常的分类
+        // 剔除不存在的分类
         foreach ($category as $key => $categoryItem) {
-            if (! ArticleCategory::hasInfoById(intval($categoryItem), Enum::STATUS_ON)) {
+            if (! ArticleCategory::hasInfoById(intval($categoryItem))) {
                 unset($category[$key]);
             }
         }
@@ -215,9 +215,9 @@ class ArticleLogic extends Logic
         if (empty($category)) {
             error(ErrorCode::SYSTEM_REQUEST_PARAMS_ERROR);
         }
-        // 获取正常的分类
+        // 剔除不存在的分类
         foreach ($category as $key => $categoryItem) {
-            if (! ArticleCategory::hasInfoById(intval($categoryItem), Enum::STATUS_ON)) {
+            if (! ArticleCategory::hasInfoById(intval($categoryItem))) {
                 unset($category[$key]);
             }
         }

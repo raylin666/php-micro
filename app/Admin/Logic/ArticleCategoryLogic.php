@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Admin\Logic;
 
 use App\Admin\Model\ArticleCategory;
+use Core\Constants\Enum;
 use Core\Constants\ErrorCode;
 use Exception;
 use Hyperf\Database\Model\Collection;
@@ -44,7 +45,7 @@ class ArticleCategoryLogic extends Logic
      */
     public function listSelect(): Collection
     {
-        return ArticleCategory::getParentList();
+        return ArticleCategory::getParentList(Enum::STATUS_ON);
     }
 
     /**
