@@ -9,8 +9,9 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+use App\Api\Controller\ArticleController;
 use Hyperf\HttpServer\Router\Router;
+use Hyperf\Validation\Middleware\ValidationMiddleware;
 
-Router::get('/favicon.ico', function () { return ''; });
-
-Router::get('/heartbeat', function () { return 'PONE'; });
+// 获取文章列表
+Router::get('/list', [ArticleController::class, 'list'], ['middleware' => [ValidationMiddleware::class]]);

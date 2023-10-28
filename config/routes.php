@@ -43,7 +43,12 @@ Router::addGroup('/admin', function () {
 });
 
 // 前台服务
-Router::addGroup('/', function () {
+Router::addGroup('', function () {
     // 公共路由
     include_once 'routes/api/base.php';
+
+    // 文章相关路由
+    Router::addGroup('/article', function () {
+        include_once 'routes/api/article.php';
+    });
 });
