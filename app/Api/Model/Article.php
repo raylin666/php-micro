@@ -62,7 +62,7 @@ class Article extends Model
             ->paginate(
                 $size,
                 [
-                    'article.id', 'title', 'author', 'cover', 'sort', 'recommend_flag', 'commented_flag', 'status',
+                    'article.id', 'title', 'author', 'summary', 'cover', 'sort', 'recommend_flag', 'commented_flag', 'status',
                     'view_count', 'comment_count', 'collection_count', 'zan_count', 'share_count', 'user_id',
                     'last_commented_at', 'created_at', 'updated_at', 'source', 'source_url', 'keyword',
                 ],
@@ -73,6 +73,7 @@ class Article extends Model
             $item['keyword'] = json_decode($item['keyword'], true);
             $categoryIds = ArticleCategoryRelation::getCategoryByArticleId($item['id']);
             $item['category'] = ArticleCategory::getCategoryByArticleIds($categoryIds->toArray(), ['id', 'name', 'color']);
+            $item['avatar'] = Account::getBasicById($item['user_id'])['avatar'] ?? '';
         }
 
         return $result;

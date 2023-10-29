@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Api\Model;
 
+use Hyperf\Collection\Collection;
 use Hyperf\Database\Model\SoftDeletes;
 
 /**
@@ -43,4 +44,9 @@ class ArticleCategory extends Model
      * The attributes that should be cast to native types.
      */
     protected array $casts = ['id' => 'integer', 'pid' => 'integer', 'sort' => 'integer', 'status' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    public static function getCategoryByArticleIds(array $ids, array $columns = ['*']): Collection
+    {
+        return self::whereIn('id', $ids)->select($columns)->get();
+    }
 }

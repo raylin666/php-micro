@@ -11,8 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Api\Logic;
 
-use App\Admin\Logic\Logic;
-use App\Admin\Model\Article;
+use App\Api\Model\Article;
 use Core\Constants\ErrorCode;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
 
